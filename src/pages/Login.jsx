@@ -69,17 +69,17 @@ export default function Login() {
 
                         {/* LOGO */}
 
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-3">
 
                             <img
                                 src={barangayLogo}
                                 alt="Barangay Logo"
-                                className="w-60 h-60 object-contain flex-shrink-0"
+                                className="w-50 h-50 object-contain flex-shrink-0"
                             />
 
                             <div>
 
-                                <h1 className="text-[33px] font-bold leading-tight">
+                                <h1 className="text-[30px] font-bold leading-tight">
                                     Barangay Equipment
                                 </h1>
 
