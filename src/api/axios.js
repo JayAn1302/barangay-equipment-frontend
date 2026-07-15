@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://barangayequipment.runasp.net/api"
+    baseURL:  "http://barangayequipment2.runasp.net/api"
 });
 
 api.interceptors.request.use(config => {
