@@ -10,7 +10,7 @@ export default function StatsCard({
 
     return (
 
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 h-[180px] px-5 py-6 flex">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all duration-300 h-[180px] px-5 py-6 flex">
 
             <div className="flex justify-between items-start w-full h-full">
 
@@ -24,19 +24,19 @@ export default function StatsCard({
 
                     </div>
 
-                    <h1 className="text-[35px] leading-none font-bold text-slate-800 mt-2">
+                    <h1 className="text-[35px] leading-none font-bold text-slate-800 dark:text-white mt-2">
 
                         {value}
 
                     </h1>
 
-                    <p className="text-slate-600 mt-1 font-medium text-[14px]">
+                    <p className="text-slate-600 dark:text-slate-300 mt-1 font-medium text-[14px]">
 
                         {title}
 
                     </p>
 
-                    <p className="text-green-500 text-[11px] mt-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                    <p className="text-green-600 dark:text-green-400 text-[11px] mt-1 whitespace-nowrap overflow-hidden text-ellipsis">
 
                         {subtitle}
 

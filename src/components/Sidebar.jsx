@@ -9,42 +9,58 @@ import {
     Shield
 } from "lucide-react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
+    const navigate = useNavigate();
+
+    const role = localStorage.getItem("role");
+
+    const handleLogout = () => {
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    localStorage.removeItem("fullName");
+
+    navigate("/login");
+};
 
     const menu = [
-        {
-            name: "Dashboard",
-            icon: LayoutDashboard,
-            path: "/dashboard"
-        },
-        {
-            name: "Equipment",
-            icon: Package,
-            path: "/equipment"
-        },
-        {
-            name: "Borrowers",
-            icon: Users,
-            path: "/borrowers"
-        },
-        {
-            name: "Borrowings",
-            icon: ClipboardList,
-            path: "/borrowings"
-        },
-        {
-            name: "Reports",
-            icon: BarChart3,
-            path: "/reports"
-        },
-        {
+    {
+        name: "Dashboard",
+        icon: LayoutDashboard,
+        path: "/dashboard"
+    },
+    {
+        name: "Equipment",
+        icon: Package,
+        path: "/equipment"
+    },
+    {
+        name: "Borrowers",
+        icon: Users,
+        path: "/borrowers"
+    },
+    {
+        name: "Borrowings",
+        icon: ClipboardList,
+        path: "/borrowings"
+    },
+    {
+        name: "Reports",
+        icon: BarChart3,
+        path: "/reports"
+    },
+
+    ...(role === "Admin"
+        ? [{
             name: "Users",
             icon: UserCog,
             path: "/users"
-        }
-    ];
+        }]
+        : [])
+];
 
     return (
         <aside className="w-[230px] h-screen bg-[#08284A] text-white flex flex-col flex-shrink-0">
@@ -131,7 +147,10 @@ export default function Sidebar() {
 
             <div className="mt-auto px-5 py-5 border-t border-blue-900">
 
-                <button className="flex items-center gap-3 text-red-400 hover:text-red-300 transition">
+               <button
+    onClick={handleLogout}
+    className="flex items-center gap-3 text-red-400 hover:text-red-300 transition"
+>
 
                     <LogOut size={20} />
 

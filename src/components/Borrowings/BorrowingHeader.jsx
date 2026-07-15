@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 
-export default function EquipmentHeader({ onAdd }) {
+export default function BorrowingHeader({ onAdd }) {
 
     return (
 
@@ -10,30 +10,32 @@ export default function EquipmentHeader({ onAdd }) {
 
                 <h1 className="text-3xl font-bold text-slate-800">
 
-                    Equipment Inventory
+                    Borrowings
 
                 </h1>
 
                 <p className="text-slate-500 mt-1">
 
-                    Manage all barangay equipment.
+                    Manage equipment borrowing records
 
                 </p>
 
             </div>
 
-        {onAdd && (
             <button
+
                 onClick={onAdd}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl flex items-center gap-2 shadow transition"
+
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl flex items-center gap-2"
+
             >
 
                 <Plus size={20} />
 
-                Add Equipment
+                New Borrowing
 
             </button>
-        )}
+
         </div>
 
     );

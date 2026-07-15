@@ -6,6 +6,8 @@ export default function EquipmentTable({
     onDelete
 }) {
 
+    const role = localStorage.getItem("role");
+
     return (
 
         <div className="bg-white rounded-3xl shadow overflow-hidden">
@@ -98,7 +100,9 @@ export default function EquipmentTable({
                                 <td className="px-6 py-4">
 
                                     <div className="flex justify-center gap-3">
-
+                                    
+                                    {role === "Admin" && (
+                                     <>
                                         <button
                                             onClick={() => onEdit(item)}
                                             className="text-blue-600 hover:text-blue-800"
@@ -112,7 +116,8 @@ export default function EquipmentTable({
                                         >
                                             <Trash2 size={20} />
                                         </button>
-
+                                     </>
+                                    )}
                                     </div>
 
                                 </td>

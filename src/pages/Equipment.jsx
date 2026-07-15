@@ -1,28 +1,30 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useContext } from "react";
 import {
     getEquipments,
     createEquipment,
     updateEquipment,
     deleteEquipment
 } from "../services/equipmentService";
-
 import EquipmentModal from "../components/Equipment/EquipmentModal";
-
 import EquipmentHeader from "../components/Equipment/EquipmentHeader";
 import EquipmentSearch from "../components/Equipment/EquipmentSearch";
 import EquipmentTable from "../components/Equipment/EquipmentTable";
 import DeleteEquipmentModal from "../components/Equipment/DeleteEquipmentModal";
 import toast from "react-hot-toast";
+import { SearchContext } from "../context/SearchContext";
+import { useSearchParams } from "react-router-dom";
 
 export default function Equipment() {
 
     const [equipments, setEquipments] = useState([]);
-    const [search, setSearch] = useState("");
     const [openModal, setOpenModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
     const [selectedEquipment, setSelectedEquipment] = useState(null);
+    const role = localStorage.getItem("role");
+    const { search } = useContext(SearchContext);
+    const [searchParams] = useSearchParams();
+    const selectedId = searchParams.get("id");
 
     useEffect(() => {
         loadEquipments();
@@ -45,6 +47,24 @@ export default function Equipment() {
         }
 
     }
+
+    useEffect(() => {
+
+    if (!selectedId) return;
+
+    const equipment = equipments.find(
+        e => e.id === Number(selectedId)
+    );
+
+    if (equipment) {
+
+        console.log(equipment);
+
+        // Later we'll automatically open the Edit/View modal here.
+
+    }
+
+}, [equipments, selectedId]);
 
     async function handleSave(data) {
 
@@ -118,7 +138,11 @@ async function handleDelete(id) {
         <div className="space-y-6">
 
             <EquipmentHeader
-                onAdd={() => setOpenModal(true)}
+                onAdd={
+                    role === "Admin"
+                        ? () => setOpenModal(true)
+                        : null
+                }
             />
 
             <EquipmentSearch

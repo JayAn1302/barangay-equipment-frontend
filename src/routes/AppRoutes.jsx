@@ -8,6 +8,7 @@ import Borrowings from "../pages/Borrowings";
 import Reports from "../pages/Reports";
 import Users from "../pages/Users";
 import NotFound from "../pages/NotFound";
+import AdminRoute from "./AdminRoute";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -33,7 +34,14 @@ export default function AppRoutes() {
                 <Route path="/borrowers" element={<Borrowers />} />
                 <Route path="/borrowings" element={<Borrowings />} />
                 <Route path="/reports" element={<Reports />} />
-                <Route path="/users" element={<Users />} />
+               <Route
+                    path="/users"
+                    element={
+                        <AdminRoute>
+                            <Users />
+                        </AdminRoute>
+                    }
+                />
             </Route>
 
             <Route path="*" element={<NotFound />} />

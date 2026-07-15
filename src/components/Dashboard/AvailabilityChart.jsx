@@ -15,45 +15,32 @@ ChartJS.register(
 
 export default function AvailabilityChart({ dashboard }) {
 
-    const data = {
+    if (!dashboard) return null;
 
-        labels: [
-            "Available",
-            "Borrowed",
-            "Maintenance"
-        ],
+        const chartValues = [
+            dashboard.availableEquipment,
+            dashboard.borrowedEquipment,
+            dashboard.maintenanceEquipment
+        ];
 
-        datasets: [
+        const hasData = chartValues.some(value => value > 0);
 
-            {
-
-                data: [
-
-                    dashboard.availableEquipment,
-
-                    dashboard.borrowedEquipment,
-
-                    dashboard.maintenanceEquipment
-
-                ],
-
-                backgroundColor: [
-
-                    "#2563eb",
-
-                    "#22c55e",
-
-                    "#ef4444"
-
-                ],
-
-                borderWidth: 0
-
-            }
-
-        ]
-
-    };
+        const data = {
+            labels: [
+                "Available",
+                "Borrowed",
+                "Maintenance"
+            ],
+            datasets: [
+                {
+                    data: hasData ? chartValues : [1],
+                    backgroundColor: hasData
+                        ? ["#2563eb", "#22c55e", "#ef4444"]
+                        : ["#e5e7eb"],
+                    borderWidth: 0
+                }
+            ]
+        };
 
    return (
 
