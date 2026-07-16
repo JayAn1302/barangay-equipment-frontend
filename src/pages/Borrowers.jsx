@@ -7,7 +7,6 @@ import {
 } from "../services/borrowerService";
 import BorrowerModal from "../components/Borrowers/BorrowerModal";
 import toast from "react-hot-toast";
-import { SearchContext } from "../context/SearchContext";
 import BorrowerHeader from "../components/Borrowers/BorrowerHeader";
 import BorrowerSearch from "../components/Borrowers/BorrowerSearch";
 import BorrowerTable from "../components/Borrowers/BorrowerTable";
@@ -20,7 +19,10 @@ export default function Borrowers() {
     const [selectedBorrower, setSelectedBorrower] = useState(null);
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
-    const { search } = useContext(SearchContext);
+    const [search, setSearch] = useState("");
+    const filteredBorrowers = borrowers.filter(item =>
+    item.fullName.toLowerCase().includes(search.toLowerCase())
+);
 
     useEffect(() => {
 
@@ -113,9 +115,6 @@ async function handleDelete(id) {
 
 }
 
-    const filteredBorrowers = borrowers.filter(item =>
-        item.fullName.toLowerCase().includes(search.toLowerCase())
-    );
 
     return (
 

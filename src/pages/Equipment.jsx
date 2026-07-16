@@ -11,7 +11,6 @@ import EquipmentSearch from "../components/Equipment/EquipmentSearch";
 import EquipmentTable from "../components/Equipment/EquipmentTable";
 import DeleteEquipmentModal from "../components/Equipment/DeleteEquipmentModal";
 import toast from "react-hot-toast";
-import { SearchContext } from "../context/SearchContext";
 import { useSearchParams } from "react-router-dom";
 
 export default function Equipment() {
@@ -22,9 +21,10 @@ export default function Equipment() {
     const [deleteItem, setDeleteItem] = useState(null);
     const [selectedEquipment, setSelectedEquipment] = useState(null);
     const role = localStorage.getItem("role");
-    const { search } = useContext(SearchContext);
     const [searchParams] = useSearchParams();
     const selectedId = searchParams.get("id");
+    const [search, setSearch] = useState("");
+    
 
     useEffect(() => {
         loadEquipments();
@@ -169,23 +169,14 @@ async function handleDelete(id) {
             />
 
         <EquipmentModal
-
     open={openModal}
-
     equipment={selectedEquipment}
-
     onClose={() => {
-
         setOpenModal(false);
-
         setSelectedEquipment(null);
-
     }}
-
     onSave={handleSave}
-
 />
-
 <DeleteEquipmentModal
 
     open={deleteModal}

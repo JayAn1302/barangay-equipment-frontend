@@ -11,15 +11,15 @@ import ReportTabs from "../components/Reports/ReportTabs";
 import ReportTable from "../components/Reports/ReportTable";
 import { generatePdf } from "../utils/pdfGenerator";
 import { FileDown, Printer } from "lucide-react";
-import { SearchContext } from "../context/SearchContext";
+
 
 export default function Reports() {
 
     const [activeTab, setActiveTab] = useState("borrowings");
 
     const [reports, setReports] = useState([]);
-
-    const { search } = useContext(SearchContext);
+    const [search, setSearch] = useState("");
+   
 
     useEffect(() => {
 

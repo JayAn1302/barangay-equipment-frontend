@@ -13,7 +13,6 @@ import UserSearch from "../components/Users/UserSearch";
 import UserTable from "../components/Users/UserTable";
 import UserModal from "../components/Users/UserModal";
 import StatusModal from "../components/Users/StatusModal";
-import { SearchContext } from "../context/SearchContext";
 
 export default function Users() {
 
@@ -25,7 +24,6 @@ export default function Users() {
 
     const [selectedUser, setSelectedUser] = useState(null);
 
-    const { search } = useContext(SearchContext);
 
     useEffect(() => {
         loadUsers();

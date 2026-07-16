@@ -21,32 +21,35 @@ export default function EquipmentModal({
 
     useEffect(() => {
 
-    if (equipment) {
+    if (open) {
 
-        setForm({
+        if (equipment) {
 
-            equipmentName: equipment.equipmentName,
-            category: equipment.category,
-            quantity: equipment.quantity,
-            condition: equipment.condition
+            // Edit mode
+            setForm({
+                equipmentName: equipment.equipmentName,
+                category: equipment.category,
+                quantity: equipment.quantity,
+                condition: equipment.condition
+            });
 
-        });
+        } else {
 
-    } else {
+            // Add mode
+            setForm({
+                equipmentName: "",
+                category: "",
+                quantity: 1,
+                condition: "Good"
+            });
 
-        setForm({
-
-            equipmentName: "",
-            category: "",
-            quantity: 1,
-            condition: "Good"
-
-        });
+        }
 
     }
 
-}, [equipment]);
-    if (!open) return null;
+}, [open, equipment]);
+
+if (!open) return null;
 
     return (
 

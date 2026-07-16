@@ -18,7 +18,8 @@ import toast from "react-hot-toast";
 import BorrowingHeader from "../components/Borrowings/BorrowingHeader";
 import BorrowingSearch from "../components/Borrowings/BorrowingSearch";
 import BorrowingTable from "../components/Borrowings/BorrowingTable";
-import { SearchContext } from "../context/SearchContext";
+
+
 
 export default function Borrowings() {
 
@@ -28,7 +29,8 @@ export default function Borrowings() {
     const [selectedBorrowing, setSelectedBorrowing] = useState(null);
     const [borrowers, setBorrowers] = useState([]);
     const [equipments, setEquipments] = useState([]);
-    const { search } = useContext(SearchContext);
+    const [search, setSearch] = useState("");
+    
 
     useEffect(() => {
 
@@ -94,7 +96,13 @@ async function loadEquipments() {
 
 }
 
+const [saving, setSaving] = useState(false);
+
 async function handleSave(data) {
+
+    if (saving) return;
+
+    setSaving(true);
 
     try {
 
@@ -107,18 +115,16 @@ async function handleSave(data) {
         loadBorrowings();
 
     }
-
     catch (error) {
 
-        console.log(error);
-
-        toast.error(
-            error.response?.data ||
-            "Failed to create borrowing."
-        );
+        toast.error(error.response?.data || "Failed to save borrowing.");
 
     }
+    finally {
 
+        setSaving(false);
+
+    }
 }
 
 async function handleReturn(data) {
@@ -196,6 +202,8 @@ async function handleReturn(data) {
                 borrowers={borrowers}
 
                 equipments={equipments}
+
+                saving={saving}
 
             />
 

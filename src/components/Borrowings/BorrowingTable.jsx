@@ -98,29 +98,35 @@ export default function BorrowingTable({
 
                                 </td>
 
-                                <td className="px-6 py-4">
+                               <td className="px-6 py-4">
 
-                                    <div className="flex justify-center">
+                                <div className="flex justify-center">
 
-                                        {item.status === "Borrowed" && (
+                                    {(item.status === "Borrowed" ||
+                                    item.status === "Overdue") && (
 
-                                            <button
+                                        <button
+                                            onClick={() => onReturn(item)}
+                                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition"
+                                            title="Return Equipment"
+                                        >
+                                            <RotateCcw size={16} />
+                                            Return
+                                        </button>
 
-                                                onClick={() => onReturn(item)}
+                                    )}
 
-                                                className="text-blue-600 hover:text-blue-800"
+                                    {item.status === "Returned" && (
 
-                                            >
+                                        <span className="text-gray-400 text-sm">
+                                            Returned
+                                        </span>
 
-                                                <RotateCcw size={20} />
+                                    )}
 
-                                            </button>
+                                </div>
 
-                                        )}
-
-                                    </div>
-
-                                </td>
+                            </td>
 
                             </tr>
 

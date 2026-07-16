@@ -38,81 +38,81 @@ export default function Navbar() {
 
     const location = useLocation();
 
-   const {
-    search,
-    setSearch,
-    results,
-    setResults
-} = useContext(SearchContext);
+    const {
+            search,
+            setSearch,
+            results,
+            setResults
+            } = useContext(SearchContext);
 
-const pageName =
-    location.pathname === "/dashboard"
-        ? "Dashboard"
-        : location.pathname === "/equipment"
-        ? "Equipment"
-        : location.pathname === "/borrowers"
-        ? "Borrowers"
-        : location.pathname === "/borrowings"
-        ? "Borrowings"
-        : location.pathname === "/reports"
-        ? "Reports"
-        : location.pathname === "/users"
-        ? "Users"
-        : "Dashboard";
+    const pageName =
+        location.pathname === "/dashboard"
+            ? "Dashboard"
+            : location.pathname === "/equipment"
+            ? "Equipment"
+            : location.pathname === "/borrowers"
+            ? "Borrowers"
+            : location.pathname === "/borrowings"
+            ? "Borrowings"
+            : location.pathname === "/reports"
+            ? "Reports"
+            : location.pathname === "/users"
+            ? "Users"
+            : "Dashboard";
 
     const loadUnreadCount = async () => {
-        try {
-            const count = await getUnreadCount();
+            try {
+    const count = await getUnreadCount();
             setUnreadCount(count);
-        } catch (error) {
+          } catch (error) {
             console.error("Failed to load unread count:", error);
-        }
-    };
+          }
+        };
 
-        useEffect(() => {
+             useEffect(() => {
 
-    loadUnreadCount();
+            loadUnreadCount();
 
-    loadNotifications();
+            loadNotifications();
 
     const interval = setInterval(() => {
 
-        loadUnreadCount();
+                loadUnreadCount();
 
-        loadNotifications();
+                loadNotifications();
 
-    }, 5000); // every 5 seconds
+            }, 5000); // every 5 seconds
 
-    return () => clearInterval(interval);
+            return () => clearInterval(interval);
 
-}, []);
+        }, []);
 
     const loadNotifications = async () => {
 
     try {
 
-        const data = await getNotifications();
+    const data = await getNotifications();
 
         setNotifications(data);
 
-    } catch (error) {
+            } catch (error) {
 
-        console.error(error);
+                console.error(error);
 
-    }
+            }
 
-};
+        };
 
-const searchPlaceholder = {
-    "/dashboard": "Search dashboard...",
-    "/equipment": "Search equipment...",
-    "/borrowers": "Search borrower...",
-    "/borrowings": "Search borrowing...",
-    "/reports": "Search reports...",
-    "/users": "Search user..."
-};
+    const searchPlaceholder = {
+            "/dashboard": "Search dashboard...",
+            "/equipment": "Search equipment...",
+            "/borrowers": "Search borrower...",
+            "/borrowings": "Search borrowing...",
+            "/reports": "Search reports...",
+            "/users": "Search user..."
+        };
 
-const handleNotificationClick = async (notification) => {
+    const handleNotificationClick = async (notification) => {
 
     try {
 
@@ -181,64 +181,64 @@ useEffect(() => {
 
 }, []);
 
-const handleSearch = async (value) => {
+    const handleSearch = async (value) => {
 
-    setSearch(value);
+            setSearch(value);
 
-    if (value.trim() === "") {
+            if (value.trim() === "") {
 
-        setResults([]);
+                setResults([]);
 
-        return;
-    }
+                return;
+            }
 
-    try {
+            try {
 
-        const data = await searchAll(value);
+    const data = await searchAll(value);
 
-        setResults(data);
+                setResults(data);
 
-    } catch {
+            } catch {
 
-        setResults([]);
+                setResults([]);
 
-    }
+            }
 
-};
+        };
 
-        const handleSearchClick = (item) => {
+    const handleSearchClick = (item) => {
 
-    setResults([]);
+            setResults([]);
 
-    setSearch("");
+            setSearch("");
 
-    switch (item.type) {
+            switch (item.type) {
 
-        case "Equipment":
+                case "Equipment":
 
-            navigate(`/equipment?id=${item.id}`);
+                    navigate(`/equipment?id=${item.id}`);
 
-            break;
+                    break;
 
-        case "Borrower":
+                case "Borrower":
 
-            navigate(`/borrowers?id=${item.id}`);
+                    navigate(`/borrowers?id=${item.id}`);
 
-            break;
+                    break;
 
-        case "Borrowing":
+                case "Borrowing":
 
-            navigate(`/borrowings?id=${item.id}`);
+                    navigate(`/borrowings?id=${item.id}`);
 
-            break;
+                    break;
 
-        default:
+                default:
 
-            break;
+                    break;
 
-    }
+            }
 
-};
+        };
 
     return (
 
@@ -412,7 +412,8 @@ const handleSearch = async (value) => {
 
  </div>
 
-                <button
+              {/*
+              <button
                     onClick={() => setDarkMode(!darkMode)}
                     className="p-2 rounded-lg hover:bg-gray-100 transition"
                 >
@@ -423,7 +424,8 @@ const handleSearch = async (value) => {
                         <Moon size={20} />
                     )}
 
-                </button>
+               </button>
+               */}
 
                 <div className="flex items-center gap-3">
 

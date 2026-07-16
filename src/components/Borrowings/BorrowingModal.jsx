@@ -7,7 +7,8 @@ export default function BorrowingModal({
     onClose,
     onSave,
     borrowers,
-    equipments
+    equipments,
+    saving
 
 }) {
 
@@ -216,15 +217,16 @@ export default function BorrowingModal({
                     </button>
 
                     <button
-
-                        onClick={()=>onSave(form)}
-
-                        className="px-5 py-3 rounded-xl bg-blue-600 text-white"
-
+                        disabled={saving}
+                        onClick={() => onSave(form)}
+                        className={`px-5 py-3 rounded-xl text-white transition
+                            ${
+                                saving
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-blue-600 hover:bg-blue-700"
+                            }`}
                     >
-
-                        Save Borrowing
-
+                        {saving ? "Saving..." : "Save Borrowing"}
                     </button>
 
                 </div>
