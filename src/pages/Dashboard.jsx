@@ -6,12 +6,13 @@ import StatsCard from "../components/Dashboard/StatsCard";
 import RecentBorrowings from "../components/Dashboard/RecentBorrowings";
 import AvailabilityChart from "../components/Dashboard/AvailabilityChart";
 import QuickActions from "../components/Dashboard/QuickActions";
-
 import {
+
     Package2,
     Users2,
     ClipboardList,
     TriangleAlert
+
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -19,50 +20,54 @@ export default function Dashboard() {
     const [dashboard, setDashboard] = useState(null);
     const [currentTime, setCurrentTime] = useState(new Date());
     const [greeting, setGreeting] = useState("");
-
     const updateGreeting = () => {
 
-        const hour = new Date().getHours();
+    const hour = new Date().getHours();
 
-        if (hour >= 5 && hour < 12) {
-            setGreeting("🌅 Good Morning");
-        }
-        else if (hour >= 12 && hour < 17) {
-            setGreeting("☀️ Good Afternoon");
-        }
-        else if (hour >= 17 && hour < 21) {
-            setGreeting("🌇 Good Evening");
-        }
-        else {
-            setGreeting("🌙 Good Night");
-        }
-    };
+    if (hour >= 5 && hour < 12) {
+        setGreeting("🌅 Good Morning");
+    }
+    else if (hour >= 12 && hour < 17) {
+        setGreeting("☀️ Good Afternoon");
+    }
+    else if (hour >= 17 && hour < 21) {
+        setGreeting("🌇 Good Evening");
+    }
+    else {
+        setGreeting("🌙 Good Night");
+    }
+
+};
 
     useEffect(() => {
+
         loadDashboard();
+
     }, []);
 
     async function loadDashboard() {
 
         const data = await getDashboard();
+
         setDashboard(data);
 
     }
 
     useEffect(() => {
 
+    updateGreeting();
+
+    const timer = setInterval(() => {
+
+        setCurrentTime(new Date());
+
         updateGreeting();
 
-        const timer = setInterval(() => {
+    },1000);
 
-            setCurrentTime(new Date());
-            updateGreeting();
+    return ()=>clearInterval(timer);
 
-        }, 1000);
-
-        return () => clearInterval(timer);
-
-    }, []);
+},[]);
 
     if (!dashboard) return null;
 
@@ -71,12 +76,12 @@ export default function Dashboard() {
         <div className="space-y-5">
 
             <WelcomeBanner
-                greeting={greeting}
-                currentTime={currentTime}
-                overdueBorrowings={dashboard.overdueBorrowings}
-            />
+    greeting={greeting}
+    currentTime={currentTime}
+    overdueBorrowings={dashboard.overdueBorrowings}
+/>
 
-            <div className="grid grid-cols-4 gap-5">
+           <div className="grid grid-cols-4 gap-5">
 
                 <StatsCard
                     title="Total Equipment"
@@ -112,29 +117,27 @@ export default function Dashboard() {
 
             </div>
 
-            <div className="grid grid-cols-12 gap-6 items-stretch">
+            
 
-                {/* LEFT */}
-                <div className="col-span-8">
+           <div className="grid grid-cols-12 gap-6 items-stretch">
 
-                    <RecentBorrowings
-                        borrowings={dashboard.recentBorrowings}
-                    />
+    {/* LEFT */}
+    <div className="col-span-8">
+        <RecentBorrowings
+            borrowings={dashboard.recentBorrowings}
+        />
+    </div>
 
-                </div>
+    {/* RIGHT */}
+    <div className="col-span-4 grid grid-rows-[1fr_1fr] gap-3">
 
-                {/* RIGHT */}
-                <div className="col-span-4 grid grid-rows-[1fr_1fr] gap-3">
+        <AvailabilityChart dashboard={dashboard} />
 
-                    <AvailabilityChart
-                        dashboard={dashboard}
-                    />
+        <QuickActions />
 
-                    <QuickActions />
+    </div>
 
-                </div>
-
-            </div>
+</div>
 
         </div>
 

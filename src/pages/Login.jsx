@@ -57,15 +57,15 @@ export default function Login() {
 
     return (
 
-        <div className="min-h-screen bg-[#071C24] flex items-center justify-center p-5">
+        <div className="h-screen bg-[#071C24] flex items-center justify-center p-4 overflow-hidden">
 
-            <div className="w-full max-w-[1500px] h-[92vh] rounded-[28px] overflow-hidden shadow-2xl grid lg:grid-cols-[46%_54%]">
+            <div className="w-full max-w-[1180px] h-[88vh] max-h-[720px] rounded-[28px] overflow-hidden shadow-2xl grid lg:grid-cols-[42%_58%]">
 
                 {/* ================= LEFT ================= */}
 
-                <div className="bg-gradient-to-br from-[#062631] via-[#041d25] to-[#03161d] text-white px-14 py-10 flex">
+                <div className="bg-gradient-to-br from-[#062631] via-[#041d25] to-[#03161d] text-white px-8 py-6 flex items-center">
 
-                    <div className="max-w-[520px] mx-auto w-full flex flex-col h-full">
+                    <div className="max-w-[350px] mx-auto w-full flex flex-col justify-center">
 
                         {/* LOGO */}
 
@@ -74,16 +74,16 @@ export default function Login() {
                             <img
                                 src={barangayLogo}
                                 alt="Barangay Logo"
-                                className="w-50 h-50 object-contain flex-shrink-0"
+                                className="w-16 h-16 object-contain flex-shrink-0"
                             />
 
                             <div>
 
-                                <h1 className="text-[30px] font-bold leading-tight">
+                                <h1 className="text-[24px] font-bold leading-tight">
                                     Barangay Equipment
                                 </h1>
 
-                                <p className="text-cyan-400 text-[20px] mt-2">
+                                <p className="text-cyan-400 text-[16px] mt-2">
                                     Borrowing Management System
                                 </p>
 
@@ -93,9 +93,9 @@ export default function Login() {
 
                         {/* TITLE */}
 
-                        <div className="mt-12">
+                        <div className="mt-8">
 
-                            <h2 className="text-[56px] font-bold">
+                            <h2 className="text-[38px] font-bold">
 
                                 Welcome Back!
 
@@ -103,7 +103,7 @@ export default function Login() {
 
                             <div className="w-20 h-1 rounded-full bg-cyan-400 mt-6 mb-6"></div>
 
-                            <p className="text-gray-300 text-[18px] leading-9">
+                            <p className="text-gray-300 text-[16px] leading-8">
 
                                 Manage, borrow, and monitor barangay equipment
                                 with security and accountability.
@@ -114,7 +114,7 @@ export default function Login() {
 
                         {/* FORM */}
 
-                        <div className="mt-10 space-y-6">
+                        <div className="mt-8 space-y-5">
 
                             {/* Username */}
 
@@ -149,7 +149,7 @@ export default function Login() {
 
                                         placeholder="Enter your username"
 
-                                        className="flex-1 bg-transparent py-4 pr-5 outline-none placeholder:text-gray-500"
+                                        className="flex-1 bg-transparent py-3 pr-5 outline-none placeholder:text-gray-500"
 
                                     />
 
@@ -194,7 +194,7 @@ export default function Login() {
 
                                         placeholder="Enter your password"
 
-                                        className="flex-1 bg-transparent py-4 pr-5 outline-none placeholder:text-gray-500"
+                                        className="flex-1 bg-transparent py-3 pr-5 outline-none placeholder:text-gray-500"
 
                                     />
 
@@ -270,7 +270,7 @@ export default function Login() {
 
                                 disabled={loading}
 
-                                className="w-full py-4 rounded-xl font-bold text-xl bg-gradient-to-r from-cyan-700 to-cyan-500 hover:scale-[1.02] transition flex justify-center items-center gap-3"
+                                className="w-full py-3 rounded-xl font-bold text-xl bg-gradient-to-r from-cyan-700 to-cyan-500 hover:scale-[1.02] transition flex justify-center items-center gap-3"
 
                             >
 
@@ -289,7 +289,7 @@ export default function Login() {
 
                         {/* FOOTER */}
 
-                        <div className="mt-auto pt-8">
+                        <div className="mt-6">
 
                             <div className="flex justify-center items-center gap-2 text-gray-400">
 
@@ -327,7 +327,7 @@ export default function Login() {
 
                         alt="Barangay Hall"
 
-                        className="w-full h-full object-cover object-center"
+                        className="w-full h-full object-cover object-[center_72%]"
 
                     />
 

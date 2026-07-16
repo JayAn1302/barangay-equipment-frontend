@@ -15,7 +15,6 @@ export default function EquipmentModal({
         equipmentName: "",
         category: "",
         quantity: 1,
-        availableQuantity: 1,
         condition: "Good"
 
     });
@@ -29,7 +28,6 @@ export default function EquipmentModal({
             equipmentName: equipment.equipmentName,
             category: equipment.category,
             quantity: equipment.quantity,
-            availableQuantity: equipment.availableQuantity,
             condition: equipment.condition
 
         });
@@ -41,7 +39,6 @@ export default function EquipmentModal({
             equipmentName: "",
             category: "",
             quantity: 1,
-            availableQuantity: 1,
             condition: "Good"
 
         });
@@ -109,17 +106,6 @@ export default function EquipmentModal({
                         }
                     />
 
-                    <Input
-                        type="number"
-                        label="Available Quantity"
-                        value={form.availableQuantity}
-                        onChange={e =>
-                            setForm({
-                                ...form,
-                                availableQuantity: Number(e.target.value)
-                            })
-                        }
-                    />
 
                     <div>
 
