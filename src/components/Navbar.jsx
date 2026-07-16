@@ -242,13 +242,13 @@ useEffect(() => {
 
     return (
 
-        <header className="bg-white dark:bg-slate-900 h-20 shadow-sm border-b border-gray-200 dark:border-slate-700 flex items-center justify-between px-10 transition-colors duration-300">
+        <header className="bg-white h-20 shadow-sm border-b border-gray-200 flex items-center justify-between px-10">
 
             <div className="flex items-center gap-6">
 
                 <Menu className="text-slate-600 cursor-pointer" />
 
-                <div className="text-gray-500 dark:text-gray-300">
+                <div className="text-gray-500">
 
                     Home
 
@@ -267,7 +267,7 @@ useEffect(() => {
                 <div className="relative">
 
                     <Search
-                        className="absolute left-4 top-3 text-gray-400 dark:text-gray-500"
+                        className="absolute left-4 top-3 text-gray-400"
                         size={18}
                     />
 
@@ -276,21 +276,21 @@ useEffect(() => {
                         onChange={(e) => handleSearch(e.target.value)}
                         type="text"
                         placeholder="Search equipment..."
-                        className="pl-11 w-72 h-11 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-black dark:text-white outline-none"
+                        className="pl-11 w-72 h-11 rounded-xl border border-gray-300 bg-white text-black outline-none"
                     />
 
                     
 
                     {results.length > 0 && (
 
-                    <div className="absolute top-12 left-0 w-full bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-200 dark:border-slate-700 overflow-hidden z-50">
+                    <div className="absolute top-12 left-0 w-full bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50">
 
                         {results.map((item) => (
 
                             <div
                                 key={`${item.type}-${item.id}`}
                                 onClick={() => handleSearchClick(item)}
-                                className="px-4 py-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-700 transition flex items-center gap-3"
+                                className="px-4 py-3 cursor-pointer hover:bg-blue-50 transition flex items-center gap-3"
                             >
 
                                 <div className="text-xl">
@@ -303,7 +303,7 @@ useEffect(() => {
 
                                 <div>
 
-                                    <p className="font-semibold text-gray-800 dark:text-white">
+                                    <p className="font-semibold text-gray-800">
                                         {item.title}
                                     </p>
 
@@ -327,7 +327,7 @@ useEffect(() => {
 
     <Bell
         onClick={() => setShowNotifications(!showNotifications)}
-        className="cursor-pointer text-gray-700 dark:text-gray-200"
+        className="cursor-pointer text-gray-700"
     />
 
     {unreadCount > 0 && (
@@ -436,11 +436,11 @@ useEffect(() => {
                     </div>
 
                     <div>
-                        <p className="font-semibold text-gray-900 dark:text-white">
+                        <p className="font-semibold text-gray-900">
                             {fullName}
                         </p>
 
-                       <p className="text-gray-500 dark:text-gray-400 text-sm">
+                       <p className="text-gray-500 text-sm">
                             {role === "Admin" ? "Administrator" : "Staff"}
                         </p>
                     </div>
