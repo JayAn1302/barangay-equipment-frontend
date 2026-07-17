@@ -10,8 +10,7 @@ export default function StatsCard({
 
     return (
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all duration-300 h-[180px] px-5 py-6 flex">
-
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 h-[180px] px-5 py-6 flex">
             <div className="flex justify-between items-start w-full h-full">
 
                 {/* LEFT */}
