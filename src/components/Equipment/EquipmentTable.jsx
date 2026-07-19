@@ -83,14 +83,17 @@ export default function EquipmentTable({
 
                                 <td className="px-6 py-4">
 
-                                    <span className={`px-3 py-1 rounded-full text-sm font-medium
-                                        ${
-                                            item.status === "Available"
-                                                ? "bg-blue-100 text-blue-700"
+                                    <span
+                                        className={`px-4 py-1 rounded-full text-sm font-semibold
+                                            ${
+                                                item.status === "Available"
+                                                    ? "bg-blue-100 text-blue-700"
                                                 : item.status === "Unavailable"
-                                                ? "bg-red-100 text-red-700"
-                                                : "bg-orange-100 text-orange-700"
-                                        }`}
+                                                    ? "bg-gray-100 text-gray-700"
+                                                : item.status === "Under Maintenance"
+                                                    ? "bg-orange-100 text-orange-700"
+                                                : ""
+                                            }`}
                                     >
                                         {item.status}
                                     </span>

@@ -117,13 +117,20 @@ export default function BorrowingModal({
 
                             <option value="">Select Equipment</option>
 
-                            {equipments.map(item=>(
-                                <option
-                                    key={item.id}
-                                    value={item.id}
-                                >
-                                    {item.equipmentName}
-                                </option>
+                            {equipments
+                                .filter(item =>
+                                    item.status === "Available" &&
+                                    item.availableQuantity > 0
+                                )
+                                .map(item => (
+                                    <option
+                                        key={item.id}
+                                        value={item.id}
+                                    >
+                                        {item.condition === "Fair"
+                                            ? `${item.equipmentName} (Fair Condition)`
+                                            : item.equipmentName}
+                                    </option>
                             ))}
 
                         </select>
