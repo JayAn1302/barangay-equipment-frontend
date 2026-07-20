@@ -23,6 +23,7 @@ export default function Users() {
     const [statusModal, setStatusModal] = useState(false);
 
     const [selectedUser, setSelectedUser] = useState(null);
+    const [search, setSearch] = useState("");
 
 
     useEffect(() => {
