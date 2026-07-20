@@ -39,19 +39,21 @@ export default function Dashboard() {
 
 };
 
-    useEffect(() => {
-
-        loadDashboard();
-
-    }, []);
-
     async function loadDashboard() {
 
+    console.log("loadDashboard called");
+
+    try {
         const data = await getDashboard();
 
-        setDashboard(data);
+        console.log("Dashboard data:", data);
 
+        setDashboard(data);
     }
+    catch (err) {
+        console.error("Dashboard error:", err);
+    }
+}
 
     useEffect(() => {
 
