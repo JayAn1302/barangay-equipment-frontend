@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://localhost:7073/api/Notification";
+const API_URL = "https://barangayequipment2.runasp.net/api/Notification";
 // Replace 7143 with your backend port if it's different.
 
 export const getNotifications = async () => {
