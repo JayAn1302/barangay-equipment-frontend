@@ -45,13 +45,14 @@ export default function Dashboard() {
 
     }, []);
 
-    async function loadDashboard() {
+   async function loadDashboard() {
 
-        const data = await getDashboard();
+    const data = await getDashboard();
 
-        setDashboard(data);
+    console.log("Dashboard Data:", data);
 
-    }
+    setDashboard(data);
+}
 
     useEffect(() => {
 
