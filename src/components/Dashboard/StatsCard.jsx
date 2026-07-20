@@ -24,10 +24,14 @@ export default function StatsCard({
 
                     </div>
 
-                    <h1 className="text-[35px] leading-none font-bold text-slate-800 dark:text-white mt-2">
-
+                    <h1
+                        style={{
+                            fontSize: "40px",
+                            fontWeight: "bold",
+                            color: "red"
+                        }}
+                    >
                         {value}
-
                     </h1>
 
                     <p className="text-slate-600 dark:text-slate-300 mt-1 font-medium text-[14px]">
