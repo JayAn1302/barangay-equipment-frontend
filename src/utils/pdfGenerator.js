@@ -1,11 +1,9 @@
-
-import autoTable from "jspdf-autotable";
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import seal from "../assets/seal.png";
 
 export function generatePdf(title, columns, rows, print = false) {
     const doc = new jsPDF();
-
-    const { jsPDF } = window;
 
     const fullName =
         localStorage.getItem("fullName") || "Administrator";
