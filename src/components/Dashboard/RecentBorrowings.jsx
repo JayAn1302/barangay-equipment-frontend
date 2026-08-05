@@ -1,162 +1,91 @@
+const statusStyle = {
+    Borrowed: "text-[#1e3a8a] bg-[#1e3a8a]/10 ring-[#1e3a8a]/20",
+    Returned: "text-[#6b6a63] bg-[#6b6a63]/10 ring-[#6b6a63]/20",
+    Overdue: "text-[#b3341f] bg-[#b3341f]/10 ring-[#b3341f]/20",
+};
+
 export default function RecentBorrowings({ borrowings = [] }) {
+    const fmt = (d) =>
+        new Date(d).toLocaleDateString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+        });
 
     return (
-
-        <div className="bg-white rounded-3xl shadow h-[670px] flex flex-col">
+        <div className="flex h-[670px] flex-col overflow-hidden rounded-2xl border border-line bg-surface">
 
             {/* Header */}
-
-            <div className="flex justify-between items-center px-6 py-5">
-
-                <div>
-
-                    <h2 className="text-2xl font-bold text-slate-800">
-
-                        Recent Borrowings
-
-                    </h2>
-
-                    <p className="text-slate-500 mt-1">
-
-                        Showing latest equipment requests
-
-                    </p>
-
+            <div className="flex items-center justify-between border-b border-line px-6 py-4">
+                <div className="flex items-baseline gap-3">
+                    <span className="tnum text-xs font-semibold text-goldink">01</span>
+                    <div>
+                        <h2 className="font-serif text-base font-semibold tracking-tight">
+                            Recent Borrowings
+                        </h2>
+                        <p className="mt-0.5 text-xs text-muted">
+                            Latest equipment borrowing transactions
+                        </p>
+                    </div>
                 </div>
-
-                <button className="text-blue-600 font-semibold hover:underline">
-
-                    View All →
-
+                <button className="text-xs font-semibold text-royal transition hover:underline">
+                    View all
                 </button>
-
             </div>
 
-            {/* Alert */}
-
-            <div className="bg-red-50 border-y border-red-100 px-6 py-2 text-red-500 text-sm font-medium">
-
-                ⚠ Please follow up overdue borrowings immediately.
-
+            {/* Alert strip */}
+            <div className="flex items-center gap-2 border-b border-warn/25 bg-warn/[0.07] px-6 py-2.5 text-sm">
+                <span className="text-warn">⚠</span>
+                <span className="text-muted">
+                    Please follow up overdue borrowings immediately.
+                </span>
             </div>
 
             {/* Table */}
-            <div className="flex-1 overflow-hidden">
-            <table className="w-full">
-
-                <thead className="bg-slate-50 text-slate-500 uppercase text-xs">
-
-                    <tr>
-
-                        <th className="text-left px-5 py-3">REF ID</th>
-
-                        <th className="text-left px-5 py-3">Equipment</th>
-
-                        <th className="text-left px-5 py-3">Borrower</th>
-
-                        <th className="text-left px-5 py-3">Borrow Date</th>
-
-                        <th className="text-left px-5 py-3">Due Date</th>
-
-                        <th className="text-left px-5 py-3">Status</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {borrowings.map((item) => (
-
-                        <tr
-                            key={item.id}
-                            className="border-t hover:bg-slate-50 transition"
-                        >
-
-                            <td className="px-5 py-4 font-semibold text-blue-600">
-
-                                BRN-{String(item.id).padStart(4, "0")}
-
-                            </td>
-
-                            <td className="px-5 py-4">
-
-                                {item.equipmentName}
-
-                            </td>
-
-                            <td className="px-5 py-4">
-
-                                {item.borrowerName}
-
-                            </td>
-
-                            <td className="px-5 py-4">
-
-                                {new Date(item.borrowDate).toLocaleDateString("en-US", {
-                                    month: "short",
-                                    day: "2-digit",
-                                    year: "numeric",
-                                })}
-
-                            </td>
-
-                            <td
-                                className={`px-5 py-4 ${
-                                    item.status === "Overdue"
-                                        ? "text-red-600 font-semibold"
-                                        : ""
+            <div className="flex-1 overflow-auto">
+                <table className="w-full text-sm">
+                    <thead className="sticky top-0 bg-ground/80 backdrop-blur">
+                        <tr className="text-left text-xs uppercase tracking-wider text-muted">
+                            {["Ref ID", "Equipment", "Borrower", "Borrow Date", "Due Date", "Status"].map((h) => (
+                                <th key={h} className="px-5 py-3 font-medium">{h}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {borrowings.map((item, i) => (
+                            <tr
+                                key={item.id}
+                                className={`border-t border-line transition hover:bg-royal/[0.03] ${
+                                    i % 2 ? "bg-ground/40" : ""
                                 }`}
                             >
-
-                                {new Date(item.expectedReturnDate).toLocaleDateString("en-US", {
-                                    month: "short",
-                                    day: "2-digit",
-                                    year: "numeric",
-                                })}
-
-                            </td>
-
-                            <td className="px-5 py-4">
-
-                                <span
-                                    className={`px-3 py-1 rounded-full text-sm font-semibold
-                                    ${
-                                        item.status === "Borrowed"
-                                            ? "bg-green-100 text-green-700"
-                                            : item.status === "Returned"
-                                            ? "bg-slate-100 text-slate-600"
-                                            : "bg-red-100 text-red-600"
-                                    }`}
-                                >
-                                    {item.status}
-                                </span>
-
-                            </td>
-
-                        </tr>
-
-                    ))}
-
-                    {borrowings.length === 0 && (
-                        <tr>
-                            <td
-                                colSpan={6}
-                                className="text-center py-12 text-slate-400"
-                            >
-                                No recent borrowings found.
-                            </td>
-                        </tr>
-                    )}
-
-                </tbody>
-
-
-            </table>
+                                <td className="tnum px-5 py-3.5 font-semibold text-goldink">
+                                    {item.referenceNo}
+                                </td>
+                                <td className="px-5 py-3.5 font-medium">{item.equipmentName}</td>
+                                <td className="px-5 py-3.5 text-muted">{item.borrowerName}</td>
+                                <td className="tnum px-5 py-3.5 text-muted">{fmt(item.borrowDate)}</td>
+                                <td className={`tnum px-5 py-3.5 ${item.status === "Overdue" ? "font-semibold text-bad" : "text-muted"}`}>
+                                    {fmt(item.expectedReturnDate)}
+                                </td>
+                                <td className="px-5 py-3.5">
+                                    <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ring-1 ${statusStyle[item.status] || statusStyle.Returned}`}>
+                                        <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                                        {item.status}
+                                    </span>
+                                </td>
+                            </tr>
+                        ))}
+                        {borrowings.length === 0 && (
+                            <tr>
+                                <td colSpan={6} className="px-5 py-12 text-center text-sm text-muted">
+                                    No recent borrowings found.
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-        </div>
-
     );
-
 }

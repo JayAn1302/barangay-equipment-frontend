@@ -94,11 +94,15 @@ export default function Equipment() {
 
     catch (error) {
 
-        console.log(error);
+    toast.error(
 
-        toast.error("Failed to save equipment.");
+        error.response?.data ||
 
-    }
+        "Unable to save equipment."
+
+    );
+
+}
 
 }
 async function handleDelete(id) {

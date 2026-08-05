@@ -2,146 +2,89 @@ import { useEffect, useState } from "react";
 import { getDashboard } from "../services/dashboardService";
 
 import WelcomeBanner from "../components/Dashboard/WelcomeBanner";
-import StatsCard from "../components/Dashboard/StatsCard";
-import RecentBorrowings from "../components/Dashboard/RecentBorrowings";
+import DashboardStats from "../components/Dashboard/DashboardStats";
 import AvailabilityChart from "../components/Dashboard/AvailabilityChart";
-import QuickActions from "../components/Dashboard/QuickActions";
-import {
-
-    Package2,
-    Users2,
-    ClipboardList,
-    TriangleAlert
-
-} from "lucide-react";
+import MonthlyActivity from "../components/Dashboard/MonthlyActivity";
+import RecentBorrowings from "../components/Dashboard/RecentBorrowings";
 
 export default function Dashboard() {
-
     const [dashboard, setDashboard] = useState(null);
     const [currentTime, setCurrentTime] = useState(new Date());
     const [greeting, setGreeting] = useState("");
-    const updateGreeting = () => {
-
-    const hour = new Date().getHours();
-
-    if (hour >= 5 && hour < 12) {
-        setGreeting("🌅 Good Morning");
-    }
-    else if (hour >= 12 && hour < 17) {
-        setGreeting("☀️ Good Afternoon");
-    }
-    else if (hour >= 17 && hour < 21) {
-        setGreeting("🌇 Good Evening");
-    }
-    else {
-        setGreeting("🌙 Good Night");
-    }
-
-};
 
     useEffect(() => {
-
         loadDashboard();
-
     }, []);
 
-   async function loadDashboard() {
-
-    const data = await getDashboard();
-
-    console.log("Dashboard Data:", data);
-
-    setDashboard(data);
-}
+    async function loadDashboard() {
+        const data = await getDashboard();
+        setDashboard(data);
+    }
 
     useEffect(() => {
-
-    updateGreeting();
-
-    const timer = setInterval(() => {
-
-        setCurrentTime(new Date());
-
         updateGreeting();
 
-    },1000);
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+            updateGreeting();
+        }, 1000);
 
-    return ()=>clearInterval(timer);
+        return () => clearInterval(timer);
+    }, []);
 
-},[]);
+    function updateGreeting() {
+        const hour = new Date().getHours();
+
+        if (hour >= 5 && hour < 12)
+            setGreeting("Good Morning");
+        else if (hour >= 12 && hour < 17)
+            setGreeting("Good Afternoon");
+        else if (hour >= 17 && hour < 21)
+            setGreeting("Good Evening");
+        else
+            setGreeting("Good Night");
+    }
 
     if (!dashboard) return null;
 
     return (
+        <div className="space-y-6 animate-fadeIn">
 
-        <div className="space-y-5">
-
+            {/* Welcome Banner */}
             <WelcomeBanner
-    greeting={greeting}
-    currentTime={currentTime}
-    overdueBorrowings={dashboard.overdueBorrowings}
-/>
+                greeting={greeting}
+                currentTime={currentTime}
+                activeBorrowings={dashboard.activeBorrowings}
+                overdueBorrowings={dashboard.overdueBorrowings}
+            />
 
-           <div className="grid grid-cols-4 gap-5">
+            {/* Dashboard Statistics */}
+            <DashboardStats
+                dashboard={dashboard}
+            />
 
-                <StatsCard
-                    title="Total Equipment"
-                    value={dashboard.totalEquipment}
-                    subtitle="↑ Available"
-                    icon={<Package2 className="text-blue-600" size={24} />}
-                    color="bg-blue-100"
-                />
+            {/* Charts */}
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
 
-                <StatsCard
-                    title="Total Borrowers"
-                    value={dashboard.totalBorrowers}
-                    subtitle="↑ Registered"
-                    icon={<Users2 className="text-purple-600" size={24} />}
-                    color="bg-purple-100"
-                />
+                <div className="xl:col-span-5">
+                    <AvailabilityChart
+                        dashboard={dashboard}
+                    />
+                </div>
 
-                <StatsCard
-                    title="Active Borrowings"
-                    value={dashboard.activeBorrowings}
-                    subtitle="Currently Active"
-                    icon={<ClipboardList className="text-green-600" size={24} />}
-                    color="bg-green-100"
-                />
-
-                <StatsCard
-                    title="Overdue Borrowings"
-                    value={dashboard.overdueBorrowings}
-                    subtitle="Needs attention"
-                    icon={<TriangleAlert className="text-red-600" size={24} />}
-                    color="bg-red-100"
-                />
+                <div className="xl:col-span-7">
+                    <MonthlyActivity
+                        data={dashboard.monthlyActivity}
+                    />
+                </div>
 
             </div>
 
-            
-
-           <div className="grid grid-cols-12 gap-6 items-stretch">
-
-    {/* LEFT */}
-    <div className="col-span-8">
-        <RecentBorrowings
-            borrowings={dashboard.recentBorrowings}
-        />
-    </div>
-
-    {/* RIGHT */}
-    <div className="col-span-4 grid grid-rows-[1fr_1fr] gap-3">
-
-        <AvailabilityChart dashboard={dashboard} />
-
-        <QuickActions />
-
-    </div>
-
-</div>
+            {/* Recent Borrowings */}
+            <RecentBorrowings
+                borrowings={dashboard.recentBorrowings}
+            />
 
         </div>
-
     );
-
 }

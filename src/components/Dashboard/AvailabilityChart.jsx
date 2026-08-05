@@ -1,164 +1,120 @@
-import {
-    Chart as ChartJS,
-    ArcElement,
-    Tooltip,
-    Legend
-} from "chart.js";
-
-import { Doughnut } from "react-chartjs-2";
-
-ChartJS.register(
-    ArcElement,
-    Tooltip,
-    Legend
-);
+import { PackageCheck } from "lucide-react";
 
 export default function AvailabilityChart({ dashboard }) {
-
     if (!dashboard) return null;
 
-        const chartValues = [
-            dashboard.availableEquipment,
-            dashboard.borrowedEquipment,
-            dashboard.maintenanceEquipment
-        ];
+    const total = dashboard.totalEquipment || 1;
 
-        const hasData = chartValues.some(value => value > 0);
-
-        const data = {
-            labels: [
-                "Available",
-                "Borrowed",
-                "Maintenance"
-            ],
-            datasets: [
-                {
-                    data: hasData ? chartValues : [1],
-                    backgroundColor: hasData
-                        ? ["#2563eb", "#22c55e", "#ef4444"]
-                        : ["#e5e7eb"],
-                    borderWidth: 0
-                }
-            ]
-        };
-
-   return (
-
-    <div className="bg-white rounded-3xl shadow h-[310px] p-6">
-
-        <h2 className="text-2xl font-bold mb-5">
-
-            Equipment Availability
-
-        </h2>
-
-        <div className="flex justify-between items-center h-[220px]">
-
-            {/* LEFT SIDE */}
-
-            <div className="flex flex-col justify-between h-full w-[45%]">
-
-                <div className="space-y-4">
-
-                    <LegendItem
-                        color="bg-blue-600"
-                        title="Available"
-                        value={dashboard.availableEquipment}
-                    />
-
-                    <LegendItem
-                        color="bg-green-500"
-                        title="Borrowed"
-                        value={dashboard.borrowedEquipment}
-                    />
-
-                    <LegendItem
-                        color="bg-red-500"
-                        title="Maintenance"
-                        value={dashboard.maintenanceEquipment}
-                    />
-
-                </div>
-
-                <div className="pt-4 border-t">
-
-                    <p className="text-gray-500 uppercase text-sm">
-
-                        Total Equipment
-
-                    </p>
-
-                    <h1 className="text-4xl font-bold">
-
-                        {dashboard.totalEquipment}
-
-                    </h1>
-
-                </div>
-
-            </div>
-
-            {/* RIGHT SIDE */}
-
-            <div className="w-[50%] flex justify-center">
-
-                <div className="w-52">
-
-                    <Doughnut
-                        data={data}
-                        options={{
-                            cutout: "70%",
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            }
-                        }}
-                    />
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-);
-
-}
-function LegendItem({
-    color,
-    title,
-    value
-}) {
+    const items = [
+        {
+            title: "Available",
+            value: dashboard.availableEquipment,
+            color: "bg-ok",
+        },
+        {
+            title: "Borrowed",
+            value: dashboard.borrowedEquipment,
+            color: "bg-royal",
+        },
+        {
+            // Change this to dashboard.returnedEquipment later
+            title: "Returned",
+            value: dashboard.maintenanceEquipment,
+            color: "bg-gold",
+        },
+    ];
 
     return (
+        <div className="rounded-2xl border border-line bg-surface p-6 shadow-sm">
 
-        <div className="flex justify-between items-center">
+            {/* Header */}
+            <div className="mb-8 flex items-center gap-3">
 
-            <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-navy/10">
 
-                <div className={`w-3 h-3 rounded-full ${color}`}></div>
+                    <PackageCheck
+                        size={20}
+                        className="text-navy"
+                    />
 
-                <span className="text-[16px] text-slate-600">
+                </div>
 
-                    {title}
+                <div>
 
-                </span>
+                    <h2 className="font-serif text-lg font-semibold text-navy">
+                        Equipment Availability
+                    </h2>
+
+                    <p className="text-sm text-muted">
+                        Current equipment status
+                    </p>
+
+                </div>
 
             </div>
 
-            <span className="font-semibold text-slate-700">
+            {/* Progress Bars */}
 
-                {value}
+            <div className="space-y-6">
 
-            </span>
+                {items.map((item) => {
+
+                    const percentage =
+                        Math.min((item.value / total) * 100, 100);
+
+                    return (
+
+                        <div key={item.title}>
+
+                            <div className="mb-2 flex items-center justify-between">
+
+                                <span className="text-sm font-medium text-muted">
+                                    {item.title}
+                                </span>
+
+                                <span className="tnum text-sm font-semibold text-navy">
+                                    {item.value}
+                                </span>
+
+                            </div>
+
+                            <div className="h-1.5 overflow-hidden rounded-full bg-ground">
+
+                                <div
+                                    className={`${item.color} h-full rounded-full transition-all duration-700`}
+                                    style={{
+                                        width: `${percentage}%`,
+                                    }}
+                                />
+
+                            </div>
+
+                        </div>
+
+                    );
+
+                })}
+
+            </div>
+
+            {/* Footer */}
+
+            <div className="mt-8 border-t border-line pt-5">
+
+                <div className="flex items-center justify-between">
+
+                    <span className="text-sm text-muted">
+                        Total Equipment
+                    </span>
+
+                    <span className="tnum text-3xl font-bold text-navy">
+                        {dashboard.totalEquipment}
+                    </span>
+
+                </div>
+
+            </div>
 
         </div>
-
     );
-
-
-
 }

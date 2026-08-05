@@ -1,39 +1,49 @@
 import { Search } from "lucide-react";
 
 export default function BorrowingSearch({
-
     value,
-    onChange
-
+    onChange,
+    status,
+    onStatusChange,
 }) {
-
     return (
+        <div className="fade-up rounded-2xl border border-line bg-surface p-2">
 
-        <div className="bg-white rounded-2xl shadow p-4">
+            <div className="flex flex-col gap-3 md:flex-row">
 
-            <div className="relative">
+                {/* Search */}
 
-                <Search
-                    className="absolute left-4 top-3 text-slate-400"
-                    size={20}
-                />
+                <div className="relative flex-1">
 
-                <input
+                    <Search
+                        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                    />
 
-                    value={value}
+                    <input
+                        type="text"
+                        value={value}
+                        onChange={onChange}
+                        placeholder="Search borrower, equipment, reference..."
+                        className="w-full rounded-xl bg-transparent py-2.5 pl-9 pr-3 text-sm outline-none placeholder:text-muted/70"
+                    />
 
-                    onChange={onChange}
+                </div>
 
-                    placeholder="Search Borrower or Equipment..."
+                {/* Status Filter */}
 
-                    className="w-full border rounded-xl pl-12 pr-4 py-3 outline-none"
-
-                />
+                <select
+                    value={status}
+                    onChange={onStatusChange}
+                    className="rounded-xl border border-line bg-ground px-3 py-2.5 text-sm outline-none transition focus:border-royal focus:ring-2 focus:ring-royal/15 md:min-w-[180px]"
+                >
+                    <option value="All">All Status</option>
+                    <option value="Borrowed">Borrowed</option>
+                    <option value="Returned">Returned</option>
+                    <option value="Overdue">Overdue</option>
+                </select>
 
             </div>
 
         </div>
-
     );
-
 }

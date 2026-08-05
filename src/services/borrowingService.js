@@ -33,9 +33,7 @@ export const returnBorrowing = async (id, data) => {
 };
 
 export const deleteBorrowing = async (id) => {
-
     const response = await api.delete(`/Borrowings/${id}`);
-
     return response.data;
 
 };

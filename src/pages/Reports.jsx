@@ -5,7 +5,7 @@ import {
     getEquipmentReport,
     getOverdueReport
 } from "../services/reportService";
-
+import ReportStats from "../components/Reports/ReportStats";
 import ReportHeader from "../components/Reports/ReportHeader";
 import ReportTabs from "../components/Reports/ReportTabs";
 import ReportTable from "../components/Reports/ReportTable";
@@ -251,6 +251,11 @@ function handlePrint() {
 
             <ReportHeader />
 
+            <ReportStats
+    reports={reports}
+    activeTab={activeTab}
+/>
+
             <ReportTabs
 
                 activeTab={activeTab}
@@ -264,22 +269,32 @@ function handlePrint() {
 
                 <div className="flex justify-end gap-3">
 
-                <button
-                    onClick={handleExport}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl transition"
-                >
-                    <FileDown size={18} />
-                    Export PDF
-                </button>
+                <div className="flex items-center gap-3">
 
-                <button
-                    onClick={handlePrint}
-                    className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl transition"
-                >
-                    <Printer size={18} />
-                    Print
-                </button>
+    <button
+        onClick={handleExport}
+        className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-ink shadow-sm transition-all hover:border-royal hover:bg-ground"
+    >
+        <FileDown
+            size={17}
+            className="text-navy"
+        />
 
+        Export PDF
+
+    </button>
+
+    <button
+        onClick={handlePrint}
+        className="inline-flex items-center gap-2 rounded-xl bg-navy px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-royal active:translate-y-px"
+    >
+        <Printer size={17} />
+
+        Print
+
+    </button>
+
+</div>
             </div>
 
             </div>

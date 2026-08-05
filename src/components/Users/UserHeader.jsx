@@ -2,24 +2,36 @@ import { Plus } from "lucide-react";
 
 export default function UserHeader({ onAdd }) {
     return (
-        <div className="flex items-center justify-between">
+        <div className="fade-up flex flex-wrap items-end justify-between gap-4">
 
-            <div>
-                <h1 className="text-4xl font-bold text-slate-800">
-                    Users
-                </h1>
+            <div className="flex items-stretch gap-4">
 
-                <p className="text-slate-500 mt-1">
-                    Manage system users
-                </p>
+                <span className="w-1 shrink-0 rounded-full bg-gradient-to-b from-navy via-royal to-gold" />
+
+                <div>
+
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-goldink">
+                        Administration
+                    </p>
+
+                    <h1 className="mt-1 font-serif text-3xl font-semibold tracking-tight">
+                        System Users
+                    </h1>
+
+                    <p className="mt-1 text-sm text-muted">
+                        Manage administrator and staff accounts.
+                    </p>
+
+                </div>
+
             </div>
 
             <button
                 onClick={onAdd}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl flex items-center gap-2"
+                className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-navy px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-royal hover:shadow active:translate-y-px"
             >
                 <Plus size={18} />
-                New User
+                Add User
             </button>
 
         </div>

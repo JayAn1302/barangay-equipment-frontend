@@ -3,7 +3,8 @@ import { useEffect, useState, useContext } from "react";
 import {
     getBorrowings,
     createBorrowing,
-    returnBorrowing
+    returnBorrowing,
+     deleteBorrowing
 } from "../services/borrowingService";
 
 import ReturnEquipmentModal from "../components/Borrowings/ReturnEquipmentModal";
@@ -18,7 +19,7 @@ import toast from "react-hot-toast";
 import BorrowingHeader from "../components/Borrowings/BorrowingHeader";
 import BorrowingSearch from "../components/Borrowings/BorrowingSearch";
 import BorrowingTable from "../components/Borrowings/BorrowingTable";
-
+import BorrowingStats from "../components/Borrowings/BorrowingStats";
 
 
 export default function Borrowings() {
@@ -30,7 +31,7 @@ export default function Borrowings() {
     const [borrowers, setBorrowers] = useState([]);
     const [equipments, setEquipments] = useState([]);
     const [search, setSearch] = useState("");
-    
+    const [statusFilter, setStatusFilter] = useState("All");
 
     useEffect(() => {
 
@@ -159,25 +160,72 @@ async function handleReturn(data) {
 
 }
 
-    const filteredBorrowings = borrowings.filter(item =>
+async function handleDelete(id) {
 
-        item.borrowerName.toLowerCase().includes(search.toLowerCase()) ||
+    if (!window.confirm("Delete this borrowing record?")) return;
 
-        item.equipmentName.toLowerCase().includes(search.toLowerCase())
+    try {
 
-    );
+        await deleteBorrowing(id);
+
+        toast.success("Borrowing deleted successfully!");
+
+        loadBorrowings();
+
+    }
+    catch (error) {
+
+        toast.error(
+            error.response?.data ||
+            "Failed to delete borrowing."
+        );
+
+    }
+
+}
+
+    const filteredBorrowings = borrowings.filter(item => {
+
+    const keyword = search.toLowerCase();
+
+    const matchesSearch =
+    item.borrowerName.toLowerCase().includes(keyword) ||
+
+    item.items?.some(i =>
+        i.equipmentName.toLowerCase().includes(keyword)
+    ) ||
+
+    item.referenceNo
+        .toLowerCase()
+        .includes(keyword) ||
+
+    item.status.toLowerCase().includes(keyword);
+
+    const matchesStatus =
+        statusFilter === "All" ||
+        item.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+
+});
 
     return (
 
-        <div className="space-y-6">
+        <div className="space-y-7">
 
             <BorrowingHeader
                 onAdd={() => setOpenModal(true)}
             />
 
+            <BorrowingStats
+                borrowings={filteredBorrowings}
+            />
+
             <BorrowingSearch
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                status={statusFilter}
+                onStatusChange={(e) => setStatusFilter(e.target.value)}
             />
 
             <BorrowingTable
@@ -189,6 +237,7 @@ async function handleReturn(data) {
                     setReturnModal(true);
 
                 }}
+                onDelete={handleDelete}
             />
 
             <BorrowingModal

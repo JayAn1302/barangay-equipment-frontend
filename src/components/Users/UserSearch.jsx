@@ -2,23 +2,26 @@ import { Search } from "lucide-react";
 
 export default function UserSearch({
     value,
-    onChange
+    onChange,
 }) {
     return (
-        <div className="relative">
+        <div className="fade-up rounded-2xl border border-line bg-surface p-2">
 
-            <Search
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                size={18}
-            />
+            <div className="relative">
 
-            <input
-                type="text"
-                placeholder="Search user..."
-                value={value}
-                onChange={onChange}
-                className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none"
-            />
+                <Search
+                    className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                />
+
+                <input
+                    type="text"
+                    value={value}
+                    onChange={onChange}
+                    placeholder="Search by name, username or role..."
+                    className="w-full rounded-xl bg-transparent py-2.5 pl-9 pr-3 text-sm outline-none placeholder:text-muted/70"
+                />
+
+            </div>
 
         </div>
     );

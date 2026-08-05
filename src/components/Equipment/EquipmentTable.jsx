@@ -1,155 +1,89 @@
 import { Pencil, Trash2 } from "lucide-react";
 
-export default function EquipmentTable({
-    equipments,
-    onEdit,
-    onDelete
-}) {
+const conditionStyle = {
+    Good: "text-[#2f7d4f] bg-[#2f7d4f]/10 ring-[#2f7d4f]/20",
+    Fair: "text-[#c98a1e] bg-[#c98a1e]/10 ring-[#c98a1e]/20",
+    Damaged: "text-[#b3341f] bg-[#b3341f]/10 ring-[#b3341f]/20",
+};
 
+const statusStyle = {
+    Available: "text-[#1e3a8a] bg-[#1e3a8a]/10 ring-[#1e3a8a]/20",
+    Unavailable: "text-[#6b6a63] bg-[#6b6a63]/10 ring-[#6b6a63]/20",
+    "Under Maintenance": "text-[#c98a1e] bg-[#c98a1e]/10 ring-[#c98a1e]/20",
+};
+
+export default function EquipmentTable({ equipments, onEdit, onDelete }) {
     const role = localStorage.getItem("role");
 
     return (
-
-        <div className="bg-white rounded-3xl shadow overflow-hidden">
-
-            <table className="w-full">
-
-                <thead className="bg-slate-100">
-
-                    <tr className="text-left text-slate-600">
-
-                        <th className="px-6 py-4">Equipment</th>
-                        <th className="px-6 py-4">Category</th>
-                        <th className="px-6 py-4">Quantity</th>
-                        <th className="px-6 py-4">Available</th>
-                        <th className="px-6 py-4">Condition</th>
-                        <th className="px-6 py-4">Status</th>
-                        <th className="px-6 py-4 text-center">Action</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {equipments.length > 0 ? (
-
-                        equipments.map((item) => (
-
-                            <tr
-                                key={item.id}
-                                className="border-t hover:bg-slate-50 transition"
-                            >
-
-                                <td className="px-6 py-4 font-semibold">
-
-                                    {item.equipmentName}
-
-                                </td>
-
-                                <td className="px-6 py-4">
-
-                                    {item.category}
-
-                                </td>
-
-                                <td className="px-6 py-4">
-
-                                    {item.quantity}
-
-                                </td>
-
-                                <td className="px-6 py-4">
-
-                                    {item.availableQuantity}
-
-                                </td>
-
-                                <td className="px-6 py-4">
-
-                                    <span className={`px-3 py-1 rounded-full text-sm font-medium
-                                        ${
-                                            item.condition === "Good"
-                                                ? "bg-green-100 text-green-700"
-                                                : item.condition === "Fair"
-                                                ? "bg-yellow-100 text-yellow-700"
-                                                : "bg-red-100 text-red-700"
-                                        }`}
-                                    >
-                                        {item.condition}
-                                    </span>
-
-                                </td>
-
-                                <td className="px-6 py-4">
-
-                                    <span
-                                        className={`px-4 py-1 rounded-full text-sm font-semibold
-                                            ${
-                                                item.status === "Available"
-                                                    ? "bg-blue-100 text-blue-700"
-                                                : item.status === "Unavailable"
-                                                    ? "bg-gray-100 text-gray-700"
-                                                : item.status === "Under Maintenance"
-                                                    ? "bg-orange-100 text-orange-700"
-                                                : ""
-                                            }`}
-                                    >
-                                        {item.status}
-                                    </span>
-
-                                </td>
-
-                                <td className="px-6 py-4">
-
-                                    <div className="flex justify-center gap-3">
-                                    
-                                    {role === "Admin" && (
-                                     <>
-                                        <button
-                                            onClick={() => onEdit(item)}
-                                            className="text-blue-600 hover:text-blue-800"
-                                        >
-                                            <Pencil size={20} />
-                                        </button>
-
-                                        <button
-                                            onClick={() => onDelete(item)}
-                                            className="text-red-600 hover:text-red-800"
-                                        >
-                                            <Trash2 size={20} />
-                                        </button>
-                                     </>
-                                    )}
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        ))
-
-                    ) : (
-
-                        <tr>
-
-                            <td
-                                colSpan={7}
-                                className="py-12 text-center text-slate-500"
-                            >
-                                No equipment found.
-                            </td>
-
+        <div className="fade-up overflow-hidden rounded-2xl border border-line bg-surface">
+            <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="text-left text-xs uppercase tracking-wider text-muted">
+                            {["Serial No.", "Equipment", "Category", "Quantity", "Available", "Condition", "Status", "Action"].map((h) => (
+                                <th key={h} className={`px-6 py-3 font-medium ${h === "Action" ? "text-right" : ""}`}>
+                                    {h}
+                                </th>
+                            ))}
                         </tr>
-
-                    )}
-
-                </tbody>
-
-            </table>
-
+                    </thead>
+                    <tbody>
+                        {equipments.length > 0 ? (
+                            equipments.map((item, i) => (
+                                <tr
+                                    key={item.id}
+                                    className={`border-t border-line transition hover:bg-royal/[0.03] ${i % 2 ? "bg-ground/40" : ""}`}
+                                >
+                                    <td className="tnum px-6 py-3.5 font-semibold text-goldink">{item.serialNumber}</td>
+                                    <td className="px-6 py-3.5 font-medium">{item.equipmentName}</td>
+                                    <td className="px-6 py-3.5 text-muted">{item.category}</td>
+                                    <td className="tnum px-6 py-3.5">{item.quantity}</td>
+                                    <td className="tnum px-6 py-3.5">{item.availableQuantity}</td>
+                                    <td className="px-6 py-3.5">
+                                        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ring-1 ${conditionStyle[item.condition] || conditionStyle.Damaged}`}>
+                                            <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                                            {item.condition}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-3.5">
+                                        <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ring-1 ${statusStyle[item.status] || statusStyle.Unavailable}`}>
+                                            <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                                            {item.status}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-3.5">
+                                        <div className="flex items-center justify-end gap-1">
+                                            {role === "Admin" && (
+                                                <>
+                                                    <button
+                                                        onClick={() => onEdit(item)}
+                                                        className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-royal/10 hover:text-royal"
+                                                    >
+                                                        <Pencil className="h-4 w-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => onDelete(item)}
+                                                        className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-bad/10 hover:text-bad"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={8} className="px-6 py-12 text-center text-sm text-muted">
+                                    No equipment found.
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     );
-
 }

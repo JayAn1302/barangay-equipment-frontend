@@ -3,60 +3,118 @@ export default function ReportTable({ activeTab, reports }) {
     if (reports.length === 0) {
 
         return (
-            <div className="bg-white rounded-3xl shadow p-10 text-center text-slate-500">
-                No records found.
+
+            <div className="fade-up rounded-2xl border border-line bg-surface p-12 text-center">
+
+                <h3 className="text-lg font-semibold text-ink">
+                    No records found
+                </h3>
+
+                <p className="mt-2 text-sm text-muted">
+                    There are no available reports to display.
+                </p>
+
             </div>
+
         );
 
     }
 
     return (
 
-        <div className="bg-white rounded-3xl shadow overflow-hidden">
+        <div className="fade-up overflow-hidden rounded-2xl border border-line bg-surface">
 
-            <table className="w-full">
+            <table className="w-full border-collapse">
 
-                <thead className="bg-slate-50">
+                <thead className="bg-ground">
 
                     <tr>
 
-                        {/* Borrowings Report */}
-
                         {activeTab === "borrowings" && (
                             <>
-                                <th className="px-6 py-4 text-left">Reference</th>
-                                <th className="px-6 py-4 text-left">Borrower</th>
-                                <th className="px-6 py-4 text-left">Equipment</th>
-                                <th className="px-6 py-4 text-left">Quantity</th>
-                                <th className="px-6 py-4 text-left">Borrow Date</th>
-                                <th className="px-6 py-4 text-left">Expected Return</th>
-                                <th className="px-6 py-4 text-left">Status</th>
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Reference
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Borrower
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Equipment
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Quantity
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Borrow Date
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Expected Return
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Status
+                                </th>
                             </>
                         )}
-
-                        {/* Equipment Report */}
 
                         {activeTab === "equipment" && (
                             <>
-                                <th className="px-6 py-4 text-left">Equipment</th>
-                                <th className="px-6 py-4 text-left">Category</th>
-                                <th className="px-6 py-4 text-left">Total</th>
-                                <th className="px-6 py-4 text-left">Available</th>
-                                <th className="px-6 py-4 text-left">Borrowed</th>
-                                <th className="px-6 py-4 text-left">Status</th>
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Equipment
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Category
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Total
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Available
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Borrowed
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Status
+                                </th>
                             </>
                         )}
 
-                        {/* Overdue Report */}
-
                         {activeTab === "overdue" && (
                             <>
-                                <th className="px-6 py-4 text-left">Reference</th>
-                                <th className="px-6 py-4 text-left">Borrower</th>
-                                <th className="px-6 py-4 text-left">Equipment</th>
-                                <th className="px-6 py-4 text-left">Quantity</th>
-                                <th className="px-6 py-4 text-left">Due Date</th>
-                                <th className="px-6 py-4 text-left">Days Overdue</th>
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Reference
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Borrower
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Equipment
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Quantity
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Due Date
+                                </th>
+
+                                <th className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                                    Days Overdue
+                                </th>
                             </>
                         )}
 
@@ -70,39 +128,39 @@ export default function ReportTable({ activeTab, reports }) {
 
                         <tr
                             key={index}
-                            className="border-t hover:bg-slate-50"
+                            className="border-t border-line transition hover:bg-ground/60"
                         >
 
                             {activeTab === "borrowings" && (
                                 <>
-                                    <td className="px-6 py-4 font-semibold text-blue-600">
+                                    <td className="px-5 py-4 font-semibold text-navy">
                                         {item.referenceNo}
                                     </td>
 
-                                    <td className="px-6 py-4">
+                                    <td className="px-5 py-4 text-sm">
                                         {item.borrower}
                                     </td>
 
-                                    <td className="px-6 py-4">
+                                    <td className="px-5 py-4 text-sm">
                                         {item.equipment}
                                     </td>
 
-                                    <td className="px-6 py-4">
+                                    <td className="px-5 py-4 text-sm">
                                         {item.quantity}
                                     </td>
 
-                                    <td className="px-6 py-4">
+                                    <td className="px-5 py-4 text-sm">
                                         {item.borrowDate}
                                     </td>
 
-                                    <td className="px-6 py-4">
+                                    <td className="px-5 py-4 text-sm">
                                         {item.expectedReturnDate}
                                     </td>
 
-                                    <td className="px-6 py-4">
+                                    <td className="px-5 py-4">
 
                                         <span
-                                            className={`px-3 py-1 rounded-full text-sm font-semibold
+                                            className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold
                                             ${
                                                 item.status === "Borrowed"
                                                     ? "bg-green-100 text-green-700"
@@ -120,31 +178,64 @@ export default function ReportTable({ activeTab, reports }) {
 
                             {activeTab === "equipment" && (
                                 <>
-                                    <td className="px-6 py-4">{item.equipment}</td>
-                                    <td className="px-6 py-4">{item.category}</td>
-                                    <td className="px-6 py-4">{item.totalQuantity}</td>
-                                    <td className="px-6 py-4">{item.availableQuantity}</td>
-                                    <td className="px-6 py-4">{item.borrowedQuantity}</td>
-                                    <td className="px-6 py-4">{item.status}</td>
+                                    <td className="px-5 py-4 font-medium">
+                                        {item.equipment}
+                                    </td>
+
+                                    <td className="px-5 py-4">
+                                        {item.category}
+                                    </td>
+
+                                    <td className="px-5 py-4">
+                                        {item.totalQuantity}
+                                    </td>
+
+                                    <td className="px-5 py-4">
+                                        {item.availableQuantity}
+                                    </td>
+
+                                    <td className="px-5 py-4">
+                                        {item.borrowedQuantity}
+                                    </td>
+
+                                    <td className="px-5 py-4">
+
+                                        <span className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                                            {item.status}
+                                        </span>
+
+                                    </td>
                                 </>
                             )}
 
                             {activeTab === "overdue" && (
                                 <>
-                                    <td className="px-6 py-4 font-semibold text-blue-600">
+                                    <td className="px-5 py-4 font-semibold text-navy">
                                         {item.referenceNo}
                                     </td>
 
-                                    <td className="px-6 py-4">{item.borrower}</td>
+                                    <td className="px-5 py-4">
+                                        {item.borrower}
+                                    </td>
 
-                                    <td className="px-6 py-4">{item.equipment}</td>
+                                    <td className="px-5 py-4">
+                                        {item.equipment}
+                                    </td>
 
-                                    <td className="px-6 py-4">{item.quantity}</td>
+                                    <td className="px-5 py-4">
+                                        {item.quantity}
+                                    </td>
 
-                                    <td className="px-6 py-4">{item.dueDate}</td>
+                                    <td className="px-5 py-4">
+                                        {item.dueDate}
+                                    </td>
 
-                                    <td className="px-6 py-4 text-red-600 font-semibold">
-                                        {item.daysOverdue} day(s)
+                                    <td className="px-5 py-4">
+
+                                        <span className="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                                            {item.daysOverdue} day(s)
+                                        </span>
+
                                     </td>
                                 </>
                             )}

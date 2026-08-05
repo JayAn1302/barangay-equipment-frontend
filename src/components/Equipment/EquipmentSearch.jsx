@@ -1,26 +1,18 @@
 import { Search } from "lucide-react";
 
 export default function EquipmentSearch({ value, onChange }) {
-
     return (
-
-        <div className="relative">
-
-            <Search
-                size={20}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-            />
-
-            <input
-                type="text"
-                placeholder="Search equipment..."
-                value={value}
-                onChange={onChange}
-                className="w-full bg-white border rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-
+        <div className="fade-up rounded-2xl border border-line bg-surface p-2">
+            <div className="relative">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+                <input
+                    type="text"
+                    placeholder="Search equipment…"
+                    value={value}
+                    onChange={onChange}
+                    className="w-full rounded-xl bg-transparent py-2.5 pl-9 pr-3 text-sm outline-none placeholder:text-muted/70"
+                />
+            </div>
         </div>
-
     );
-
 }

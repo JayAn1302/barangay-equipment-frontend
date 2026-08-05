@@ -1,1 +1,131 @@
+/* ── Fonts (v12 Civic Emblem) ─────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
+
+/* ── Design tokens ────────────────────────────────────────── */
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --color-ground: #f6f4ef;
+    --color-surface: #ffffff;
+    --color-ink: #10151f;
+    --color-muted: #6b6a63;
+    --color-line: #e7e2d7;
+
+    --color-navy: #14213d;
+    --color-royal: #1e3a8a;
+    --color-gold: #b0892d;
+    --color-goldink: #8a6a1c;
+    --color-ok: #2f7d4f;
+    --color-warn: #c98a1e;
+    --color-bad: #b3341f;
+}
+
+/* ── Dark mode ────────────────────────────────────────────── */
+.dark {
+
+    /* Background */
+    --color-ground: #0f172a;
+
+    /* Cards */
+    --color-surface: #1e293b;
+
+    /* Borders */
+    --color-line: rgba(255,255,255,.08);
+
+    /* Text */
+    --color-ink: #f8fafc;
+    --color-muted: #94a3b8;
+
+    /* Brand */
+    --color-navy: #dbeafe;
+    --color-royal: #60a5fa;
+    --color-gold: #d4a017;
+    --color-goldink: #fbbf24;
+
+    --color-ok: #22c55e;
+    --color-warn: #f59e0b;
+    --color-bad: #ef4444;
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+.font-serif { font-family: var(--font-serif); }
+
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+body {
+    margin: 0;
+    background-color: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+}
+
+::selection { background: color-mix(in srgb, var(--color-royal) 22%, transparent); }
+
+.tnum { font-variant-numeric: tabular-nums; font-family: var(--font-mono); }
+
+/* thin, auto-hiding scrollbars */
+* { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: transparent; border-radius: 999px; }
+*:hover::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-muted) 35%, transparent); }
+
+/* ── Animations ───────────────────────────────────────────── */
+/* v12 page/element entrance */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* your existing animations (kept) */
+@keyframes fadeInUp {
+    0%   { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn { animation: fadeInUp 0.45s ease-out; }
+
+@keyframes modalPop {
+    from { opacity: 0; transform: translateY(15px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-modal { animation: modalPop 0.35s ease; }
+
+/* ── Card Component ───────────────────────────────────────── */
+
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        background .25s ease;
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,.06);
+}
+
+.card:hover{
+    transform: translateY(-2px);
+    box-shadow:
+        0 14px 34px rgba(0,0,0,.10);
+}
+
+.dark .card{
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.35);
+}
+
+.dark .card:hover{
+
+    box-shadow:
+        0 16px 40px rgba(0,0,0,.50);
+}

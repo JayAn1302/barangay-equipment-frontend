@@ -1,68 +1,71 @@
+import {
+    FileText,
+    Package,
+    TriangleAlert,
+} from "lucide-react";
+
 export default function ReportTabs({
 
     activeTab,
 
-    onChange
+    onChange,
 
 }) {
 
+    const tabs = [
+
+        {
+            id: "borrowings",
+            label: "Borrowings",
+            icon: FileText,
+        },
+
+        {
+            id: "equipment",
+            label: "Equipment",
+            icon: Package,
+        },
+
+        {
+            id: "overdue",
+            label: "Overdue",
+            icon: TriangleAlert,
+        },
+
+    ];
+
     return (
 
-        <div className="flex gap-4">
+        <div className="fade-up flex flex-wrap gap-3">
 
-            <button
+            {tabs.map((tab) => {
 
-                onClick={() => onChange("borrowings")}
+                const Icon = tab.icon;
 
-                className={`px-5 py-2 rounded-xl font-medium
-                ${
-                    activeTab === "borrowings"
+                const active = activeTab === tab.id;
 
-                    ? "bg-blue-600 text-white"
+                return (
 
-                    : "bg-white border"
-                }`}
-            >
+                    <button
+                        key={tab.id}
+                        onClick={() => onChange(tab.id)}
+                        className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all
+                        ${
+                            active
+                                ? "border-navy bg-navy text-white shadow-sm"
+                                : "border-line bg-surface text-ink hover:border-royal hover:bg-ground"
+                        }`}
+                    >
 
-                Borrowings
+                        <Icon size={17} />
 
-            </button>
+                        {tab.label}
 
-            <button
+                    </button>
 
-                onClick={() => onChange("equipment")}
+                );
 
-                className={`px-5 py-2 rounded-xl font-medium
-                ${
-                    activeTab === "equipment"
-
-                    ? "bg-blue-600 text-white"
-
-                    : "bg-white border"
-                }`}
-            >
-
-                Equipment
-
-            </button>
-
-            <button
-
-                onClick={() => onChange("overdue")}
-
-                className={`px-5 py-2 rounded-xl font-medium
-                ${
-                    activeTab === "overdue"
-
-                    ? "bg-blue-600 text-white"
-
-                    : "bg-white border"
-                }`}
-            >
-
-                Overdue
-
-            </button>
+            })}
 
         </div>
 

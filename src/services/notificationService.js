@@ -1,18 +1,23 @@
-import axios from "axios";
+import api from "../api/axios";
 
-const API_URL = "https://barangayequipment2.runasp.net/api/Notification";
-// Replace 7143 with your backend port if it's different.
+export async function getNotifications() {
 
-export const getNotifications = async () => {
-    const response = await axios.get(API_URL);
+    const response = await api.get("/Notification");
+
     return response.data;
-};
 
-export const getUnreadCount = async () => {
-    const response = await axios.get(`${API_URL}/unread-count`);
+}
+
+export async function markAsRead(id) {
+
+    await api.put(`/Notification/${id}/read`);
+
+}
+
+export async function getUnreadCount() {
+
+    const response = await api.get("/Notification/unread-count");
+
     return response.data;
-};
 
-export const markAsRead = async (id) => {
-    await axios.put(`${API_URL}/${id}/read`);
-};
+}

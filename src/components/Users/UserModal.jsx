@@ -1,160 +1,219 @@
+import { X, UserCog } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function UserModal({
     open,
     user,
     onClose,
-    onSave
+    onSave,
 }) {
-
     const [form, setForm] = useState({
         fullName: "",
         username: "",
         password: "",
         role: "Staff",
-        isActive: true
+        isActive: true,
     });
 
     useEffect(() => {
-
-        if (user) {
-
-            setForm({
-                fullName: user.fullName,
-                username: user.username,
-                password: "",
-                role: user.role,
-                isActive: user.isActive
-            });
-
+        if (open) {
+            if (user) {
+                setForm({
+                    fullName: user.fullName,
+                    username: user.username,
+                    password: "",
+                    role: user.role,
+                    isActive: user.isActive,
+                });
+            } else {
+                setForm({
+                    fullName: "",
+                    username: "",
+                    password: "",
+                    role: "Staff",
+                    isActive: true,
+                });
+            }
         }
-
-        else {
-
-            setForm({
-                fullName: "",
-                username: "",
-                password: "",
-                role: "Staff",
-                isActive: true
-            });
-
-        }
-
-    }, [user]);
+    }, [open, user]);
 
     if (!open) return null;
 
+    const inputCls =
+        "w-full rounded-[10px] border border-line bg-ground px-3 py-2.5 text-sm outline-none transition focus:border-royal focus:ring-2 focus:ring-royal/15 placeholder:text-muted/70";
+
     function handleChange(e) {
+        const { name, value, checked, type } = e.target;
 
-        const { name, value, type, checked } = e.target;
-
-        setForm(prev => ({
+        setForm((prev) => ({
             ...prev,
-            [name]: type === "checkbox" ? checked : value
+            [name]: type === "checkbox" ? checked : value,
         }));
-
     }
 
     function handleSubmit(e) {
-
         e.preventDefault();
-
         onSave(form);
-
     }
 
     return (
+        <div className="fixed inset-0 z-50 grid place-items-center p-4">
 
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            <div
+                className="absolute inset-0 bg-ink/40 backdrop-blur-sm"
+                onClick={onClose}
+            />
 
-            <div className="bg-white rounded-3xl w-full max-w-lg p-8">
+            <div className="animate-modal relative w-full max-w-md overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl">
 
-                <h2 className="text-2xl font-bold mb-6">
+                {/* Header */}
 
-                    {user ? "Edit User" : "New User"}
+                <div className="flex items-start justify-between border-b border-line px-6 py-4">
 
-                </h2>
+                    <div className="flex items-start gap-3">
+
+                        <div className="grid h-9 w-9 place-items-center rounded-lg bg-gold/12 text-goldink">
+
+                            <UserCog className="h-5 w-5" />
+
+                        </div>
+
+                        <div>
+
+                            <h2 className="font-serif text-lg font-semibold">
+
+                                {user ? "Edit User" : "Add User"}
+
+                            </h2>
+
+                            <p className="text-xs text-muted">
+
+                                Manage system user information.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        onClick={onClose}
+                        className="grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-ground hover:text-ink"
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+
+                </div>
+
+                {/* Body */}
 
                 <form
                     onSubmit={handleSubmit}
-                    className="space-y-4"
+                    className="space-y-4 px-6 py-5"
                 >
 
-                    <input
-                        name="fullName"
-                        placeholder="Full Name"
-                        value={form.fullName}
-                        onChange={handleChange}
-                        className="w-full border rounded-xl px-4 py-3"
-                        required
-                    />
+                    <Field label="Full Name">
 
-                    <input
-                        name="username"
-                        placeholder="Username"
-                        value={form.username}
-                        onChange={handleChange}
-                        className="w-full border rounded-xl px-4 py-3"
-                        required
-                    />
+                        <input
+                            name="fullName"
+                            value={form.fullName}
+                            onChange={handleChange}
+                            className={inputCls}
+                            placeholder="Enter full name"
+                            required
+                        />
 
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder={
-                            user
-                                ? "Leave blank to keep current password"
-                                : "Password"
-                        }
-                        value={form.password}
-                        onChange={handleChange}
-                        className="w-full border rounded-xl px-4 py-3"
-                        required={!user}
-                    />
+                    </Field>
 
-                    <select
-                        name="role"
-                        value={form.role}
-                        onChange={handleChange}
-                        className="w-full border rounded-xl px-4 py-3"
-                    >
-                        <option value="Admin">Admin</option>
-                        <option value="Staff">Staff</option>
-                    </select>
+                    <Field label="Username">
 
-                    {user && (
+                        <input
+                            name="username"
+                            value={form.username}
+                            onChange={handleChange}
+                            className={inputCls}
+                            placeholder="Enter username"
+                            required
+                        />
 
-                        <label className="flex items-center gap-2">
+                    </Field>
 
-                            <input
-                                type="checkbox"
-                                name="isActive"
-                                checked={form.isActive}
+                    <Field label="Password">
+
+                        <input
+                            type="password"
+                            name="password"
+                            value={form.password}
+                            onChange={handleChange}
+                            className={inputCls}
+                            placeholder={
+                                user
+                                    ? "Leave blank to keep current password"
+                                    : "Enter password"
+                            }
+                            required={!user}
+                        />
+
+                    </Field>
+
+                    <div className="grid grid-cols-2 gap-4">
+
+                        <Field label="Role">
+
+                            <select
+                                name="role"
+                                value={form.role}
                                 onChange={handleChange}
-                            />
+                                className={`${inputCls} appearance-none`}
+                            >
+                                <option value="Admin">Administrator</option>
+                                <option value="Staff">Staff</option>
+                            </select>
 
-                            Active
+                        </Field>
 
-                        </label>
+                        {user && (
 
-                    )}
+                            <Field label="Status">
 
-                    <div className="flex justify-end gap-3 pt-4">
+                                <select
+                                    name="isActive"
+                                    value={form.isActive ? "true" : "false"}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            isActive: e.target.value === "true",
+                                        })
+                                    }
+                                    className={`${inputCls} appearance-none`}
+                                >
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+
+                            </Field>
+
+                        )}
+
+                    </div>
+
+                    {/* Footer */}
+
+                    <div className="flex justify-end gap-3 border-t border-line pt-5">
 
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-5 py-2 rounded-xl bg-slate-200"
+                            className="rounded-[10px] border border-line bg-surface px-4 py-2 text-sm font-semibold transition hover:border-muted/40 hover:bg-ground"
                         >
                             Cancel
                         </button>
 
                         <button
                             type="submit"
-                            className="px-5 py-2 rounded-xl bg-blue-600 text-white"
+                            className="rounded-[10px] bg-navy px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-royal active:translate-y-px"
                         >
-                            Save
+                            {user ? "Save Changes" : "Save User"}
                         </button>
 
                     </div>
@@ -164,7 +223,19 @@ export default function UserModal({
             </div>
 
         </div>
-
     );
+}
 
+function Field({ label, children }) {
+    return (
+        <label className="block">
+
+            <span className="mb-1.5 block text-xs font-medium text-muted">
+                {label}
+            </span>
+
+            {children}
+
+        </label>
+    );
 }

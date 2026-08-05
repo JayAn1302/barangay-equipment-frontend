@@ -4,16 +4,15 @@ import { Outlet } from "react-router-dom";
 
 export default function DashboardLayout() {
     return (
-
-        <div className="flex h-screen bg-slate-100 overflow-hidden">
+        <div className="flex h-screen overflow-hidden bg-ground transition-colors duration-300">
 
             <Sidebar />
 
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex flex-1 flex-col overflow-hidden">
 
                 <Navbar />
 
-                <main className="flex-1 px-4 py-3 overflow-auto">
+                <main className="flex-1 overflow-auto bg-ground px-6 py-5 transition-colors duration-300">
 
                     <Outlet />
 
@@ -22,6 +21,5 @@ export default function DashboardLayout() {
             </div>
 
         </div>
-
     );
 }
