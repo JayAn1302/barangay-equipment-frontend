@@ -1,16 +1,15 @@
 import axios from "axios";
+import { getToken } from "../utils/tokenStorage";
 
-const api = axios.create({
-   baseURL:  "https://barangayequipment2.runasp.net/api"
-});
 //const api = axios.create({
-   // baseURL: "https://localhost:7073/api"
+   //baseURL: "https://barangayequipment2.runasp.net/api"
 //});
-
+const api = axios.create({
+   baseURL: "https://localhost:7073/api"
+});
 
 api.interceptors.request.use(config => {
-
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
+import { saveAuth } from "../utils/tokenStorage";
 import Seal from "../components/Seal";
 import loginImage from "../assets/barangay-login.jpg";
+
 
 import { User, Lock, Eye, EyeOff, ShieldCheck, ArrowRight } from "lucide-react";
 
@@ -21,10 +23,7 @@ export default function Login() {
             setLoading(true);
             setError("");
             const result = await login(username, password);
-            localStorage.setItem("token", result.token);
-            localStorage.setItem("username", result.username);
-            localStorage.setItem("role", result.role);
-            localStorage.setItem("fullName", result.fullName);
+            saveAuth(result, remember);
             navigate("/dashboard");
         } catch {
             setError("Invalid username or password.");
@@ -139,8 +138,12 @@ export default function Login() {
                                 />
                                 Remember me
                             </label>
-                            <button className="text-sm text-[#b0892d] transition hover:underline">
-                                Forgot password?
+                            <button
+                                    type="button"
+                                    onClick={() => navigate("/forgot-password")}
+                                    className="text-sm text-[#b0892d] transition hover:underline"
+                                >
+                                    Forgot password?
                             </button>
                         </div>
 

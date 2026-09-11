@@ -11,6 +11,7 @@ import NotFound from "../pages/NotFound";
 import AdminRoute from "./AdminRoute";
 import Returns from "../pages/Returns";
 import ActivityLogs from "../pages/ActivityLogs";
+import ForgotPassword from "../pages/ForgotPassword";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -22,6 +23,7 @@ export default function AppRoutes() {
             <Route path="/" element={<Navigate to="/login" />} />
 
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
 
             {/* Protected Pages */}
             <Route

@@ -9,6 +9,8 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
         condition: "Good",
     });
 
+     const [customName, setCustomName] = useState(""); 
+
     const categories = [
         "Furniture",
         "Electronics",
@@ -21,25 +23,40 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
         "Others",
     ];
 
+    const equipmentNames = [
+    "Monobloc Chairs",
+    "Tables",
+    "Sound System",
+    "Tents",
+    "Generator",
+    "Projector",
+    "Microphone",
+    "Extension Cord",
+    "Others",
+];  
+
     useEffect(() => {
-        if (open) {
-            if (equipment) {
-                setForm({
-                    equipmentName: equipment.equipmentName,
-                    category: equipment.category,
-                    quantity: equipment.quantity,
-                    condition: equipment.condition,
-                });
-            } else {
-                setForm({
-                    equipmentName: "",
-                    category: "",
-                    quantity: 1,
-                    condition: "Good",
-                });
-            }
+    if (open) {
+        if (equipment) {
+            const isKnownName = equipmentNames.includes(equipment.equipmentName);
+            setForm({
+                equipmentName: isKnownName ? equipment.equipmentName : "Others",
+                category: equipment.category,
+                quantity: equipment.quantity,
+                condition: equipment.condition,
+            });
+            setCustomName(isKnownName ? "" : equipment.equipmentName);
+        } else {
+            setForm({
+                equipmentName: "",
+                category: "",
+                quantity: 1,
+                condition: "Good",
+            });
+            setCustomName("");
         }
-    }, [open, equipment]);
+    }
+}, [open, equipment]);
 
     if (!open) return null;
 
@@ -86,13 +103,30 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
                     </Field>
 
                     <Field label="Equipment Name">
-                        <input
-                            className={inputCls}
-                            placeholder="e.g. Monobloc Chairs"
-                            value={form.equipmentName}
-                            onChange={(e) => setForm({ ...form, equipmentName: e.target.value })}
-                        />
-                    </Field>
+    <select
+        className={`${inputCls} appearance-none`}
+        value={form.equipmentName}
+        onChange={(e) => setForm({ ...form, equipmentName: e.target.value })}
+    >
+        <option value="">Select Equipment Name</option>
+        {equipmentNames.map((name) => (
+            <option key={name} value={name}>
+                {name}
+            </option>
+        ))}
+    </select>
+</Field>
+
+{form.equipmentName === "Others" && (
+    <Field label="Specify Equipment Name">
+        <input
+            className={inputCls}
+            placeholder="Enter equipment name"
+            value={customName}
+            onChange={(e) => setCustomName(e.target.value)}
+        />
+    </Field>
+)}
 
                     <Field label="Category">
                         <select
@@ -143,7 +177,13 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
                         Cancel
                     </button>
                     <button
-                        onClick={() => onSave(form)}
+                        onClick={() =>
+                            onSave({
+                                ...form,
+                                equipmentName:
+                                    form.equipmentName === "Others" ? customName : form.equipmentName,
+                            })
+                        }
                         className="rounded-[10px] bg-navy px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-royal active:translate-y-px"
                     >
                         Save Equipment

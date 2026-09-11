@@ -12,6 +12,8 @@ import EquipmentTable from "../components/Equipment/EquipmentTable";
 import DeleteEquipmentModal from "../components/Equipment/DeleteEquipmentModal";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+import { getRole } from "../utils/tokenStorage";
+
 
 export default function Equipment() {
 
@@ -20,11 +22,10 @@ export default function Equipment() {
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
     const [selectedEquipment, setSelectedEquipment] = useState(null);
-    const role = localStorage.getItem("role");
     const [searchParams] = useSearchParams();
     const selectedId = searchParams.get("id");
     const [search, setSearch] = useState("");
-    
+    const role = getRole();
 
     useEffect(() => {
         loadEquipments();
