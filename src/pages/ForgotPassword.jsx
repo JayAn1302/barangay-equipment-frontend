@@ -16,24 +16,18 @@ export default function ForgotPassword() {
     const [message, setMessage] = useState("");
 
     const handleRequestReset = async () => {
-        try {
-            setLoading(true);
-            setError("");
-            const result = await forgotPassword(username);
-            setMessage(result.message);
-            // NOTE: token is only returned because there's no email service yet.
-            // Once email sending is added, remove this and step 2 becomes its own page
-            // reached via the emailed link instead.
-            if (result.resetToken) {
-                setToken(result.resetToken);
-            }
-            setStep(2);
-        } catch {
-            setError("Something went wrong. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+        setLoading(true);
+        setError("");
+        const result = await forgotPassword(username);
+        setMessage(result.message);
+        setStep(2);
+    } catch {
+        setError("Something went wrong. Please try again.");
+    } finally {
+        setLoading(false);
+    }
+};
 
     const handleResetPassword = async () => {
         try {
