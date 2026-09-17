@@ -12,6 +12,7 @@ import AdminRoute from "./AdminRoute";
 import Returns from "../pages/Returns";
 import ActivityLogs from "../pages/ActivityLogs";
 import ForgotPassword from "../pages/ForgotPassword";
+import { getToken } from "../utils/tokenStorage";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -20,7 +21,7 @@ export default function AppRoutes() {
     return (
         <Routes>
 
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<RootRedirect />} />
 
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -41,10 +42,6 @@ export default function AppRoutes() {
                 <Route path="/returns" element={<Returns />} />
                 <Route path="/activity-logs" element={<ActivityLogs />} />
                 <Route
-    path="/activity-logs"
-    element={<ActivityLogs />}
-/>
-                <Route
                     path="/users"
                     element={
                         <AdminRoute>
@@ -58,4 +55,8 @@ export default function AppRoutes() {
 
         </Routes>
     );
+}
+
+function RootRedirect() {
+    return getToken() ? <Navigate to="/dashboard" /> : <Navigate to="/login" />;
 }
