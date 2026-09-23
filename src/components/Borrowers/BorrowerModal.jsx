@@ -17,10 +17,13 @@ export default function BorrowerModal({
 
     const [preview, setPreview] = useState(null);
     const [saving, setSaving] = useState(false);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
 
         if (open) {
+
+               setErrors({});
 
             if (borrower) {
 
@@ -196,6 +199,9 @@ export default function BorrowerModal({
                         />
 
                     </Field>
+                    {errors.fullName && (
+                        <p className="-mt-2 text-xs text-red-500">{errors.fullName}</p>
+                    )}
 
                     <Field label="Address">
 
@@ -212,22 +218,34 @@ export default function BorrowerModal({
                         />
 
                     </Field>
+                    {errors.address && (
+                        <p className="-mt-2 text-xs text-red-500">{errors.address}</p>
+                    )}
 
                     <Field label="Contact Number">
 
                         <input
                             className={inputCls}
                             placeholder="09XXXXXXXXX"
+                            maxLength={11}
+                            inputMode="numeric"
                             value={form.contactNumber}
-                            onChange={(e) =>
+                            onChange={(e) => {
+
+                                const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 11);
+
                                 setForm({
                                     ...form,
-                                    contactNumber: e.target.value,
-                                })
-                            }
+                                    contactNumber: digitsOnly,
+                                });
+
+                            }}
                         />
 
                     </Field>
+                    {errors.contactNumber && (
+                        <p className="-mt-2 text-xs text-red-500">{errors.contactNumber}</p>
+                )}
 
                 </div>
 
@@ -243,24 +261,39 @@ export default function BorrowerModal({
                     </button>
 
                     <button
-                        disabled={saving}
-                        onClick={async () => {
+                            disabled={saving}
+                            onClick={async () => {
 
-                            if (saving) return;
+                                if (saving) return;
 
-                            setSaving(true);
+                                const newErrors = {};
 
-                            try {
+                                if (!form.fullName.trim()) newErrors.fullName = "Full name is required";
+                                if (!form.address.trim()) newErrors.address = "Address is required";
 
-                                await onSave(form);
+                                if (!/^09\d{9}$/.test(form.contactNumber)) {
+                                    newErrors.contactNumber = "Enter a valid 11-digit number starting with 09";
+                                }
 
-                            } finally {
+                                if (Object.keys(newErrors).length > 0) {
+                                    setErrors(newErrors);
+                                    return;
+                                }
 
-                                setSaving(false);
+                                setErrors({});
+                                setSaving(true);
 
-                            }
+                                try {
 
-                        }}
+                                    await onSave(form);
+
+                                } finally {
+
+                                    setSaving(false);
+
+                                }
+
+                            }}
                         className="rounded-[10px] bg-navy px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-royal disabled:opacity-50 active:translate-y-px"
                     >
 

@@ -78,11 +78,11 @@ export default function Borrowers() {
 
     catch (error) {
 
-        console.log(error);
+    console.log(error);
 
-        toast.error("Failed to save borrower.");
+    toast.error(getErrorMessage(error, "Failed to save borrower."));
 
-    }
+}
 
 }
 
@@ -104,14 +104,11 @@ async function handleDelete(id) {
 
     catch (error) {
 
-        console.log(error);
+    console.log(error);
 
-        toast.error(
-            error.response?.data ||
-            "Failed to delete borrower."
-        );
+    toast.error(getErrorMessage(error, "Failed to delete borrower."));
 
-    }
+}
 
 }
 
@@ -183,8 +180,26 @@ async function handleDelete(id) {
 
 />
 
-        </div>
+                </div>
 
     );
 
+}
+
+function getErrorMessage(error, fallback) {
+    const data = error.response?.data;
+
+    if (!data) return fallback;
+    if (typeof data === "string") return data;
+    if (data.message) return data.message;
+    if (data.title) return data.title;
+
+    if (data.errors) {
+        const firstField = Object.values(data.errors)[0];
+        if (Array.isArray(firstField) && firstField.length > 0) {
+            return firstField[0];
+        }
+    }
+
+    return fallback;
 }
