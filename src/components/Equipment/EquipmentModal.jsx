@@ -1,7 +1,7 @@
 import { X, Boxes } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export default function EquipmentModal({ open, onClose, onSave, equipment }) {
+export default function EquipmentModal({ open, onClose, onSave, equipment, existingEquipments = [] }) {
     const [form, setForm] = useState({
         equipmentName: "",
         category: "",
@@ -10,6 +10,8 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
     });
 
      const [customName, setCustomName] = useState(""); 
+     const [errors, setErrors] = useState({});
+     const [categoryLocked, setCategoryLocked] = useState(false);
 
     const categories = [
         "Furniture",
@@ -37,6 +39,7 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
 
     useEffect(() => {
     if (open) {
+         setErrors({});
         if (equipment) {
             const isKnownName = equipmentNames.includes(equipment.equipmentName);
             setForm({
@@ -58,7 +61,46 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
     }
 }, [open, equipment]);
 
+        useEffect(() => {
+    const finalName = form.equipmentName === "Others" ? customName.trim() : form.equipmentName;
+
+    if (!finalName) {
+        setCategoryLocked(false);
+        return;
+    }
+
+    const match = existingEquipments.find(
+        (e) =>
+            e.equipmentName.toLowerCase() === finalName.toLowerCase() &&
+            e.id !== equipment?.id
+    );
+
+    if (match) {
+        setForm((prev) => ({ ...prev, category: match.category }));
+        setCategoryLocked(true);
+    } else {
+        setCategoryLocked(false);
+    }
+}, [form.equipmentName, customName, existingEquipments, equipment]);
+
     if (!open) return null;
+
+    const handleSave = () => {
+    const finalName = form.equipmentName === "Others" ? customName.trim() : form.equipmentName;
+    const newErrors = {};
+
+    if (!finalName) newErrors.equipmentName = "Equipment name is required";
+    if (!form.category) newErrors.category = "Category is required";
+    if (!form.quantity || form.quantity < 1) newErrors.quantity = "Quantity must be at least 1";
+
+    if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+    }
+
+    setErrors({});
+    onSave({ ...form, equipmentName: finalName });
+};
 
     const inputCls =
         "w-full rounded-[10px] border border-line bg-ground px-3 py-2.5 text-sm outline-none transition focus:border-royal focus:ring-2 focus:ring-royal/15 placeholder:text-muted/70";
@@ -103,36 +145,40 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
                     </Field>
 
                     <Field label="Equipment Name">
-    <select
-        className={`${inputCls} appearance-none`}
-        value={form.equipmentName}
-        onChange={(e) => setForm({ ...form, equipmentName: e.target.value })}
-    >
-        <option value="">Select Equipment Name</option>
-        {equipmentNames.map((name) => (
-            <option key={name} value={name}>
-                {name}
-            </option>
-        ))}
-    </select>
-</Field>
+                        <select
+                            className={`${inputCls} appearance-none`}
+                            value={form.equipmentName}
+                            onChange={(e) => setForm({ ...form, equipmentName: e.target.value })}
+                        >
+                            <option value="">Select Equipment Name</option>
+                            {equipmentNames.map((name) => (
+                                <option key={name} value={name}>
+                                    {name}
+                                </option>
+                            ))}
+                        </select>
+                    </Field>
+                    {errors.equipmentName && (
+                            <p className="-mt-2 text-xs text-red-500">{errors.equipmentName}</p>
+                        )}
 
-{form.equipmentName === "Others" && (
-    <Field label="Specify Equipment Name">
-        <input
-            className={inputCls}
-            placeholder="Enter equipment name"
-            value={customName}
-            onChange={(e) => setCustomName(e.target.value)}
-        />
-    </Field>
-)}
+                    {form.equipmentName === "Others" && (
+                        <Field label="Specify Equipment Name">
+                            <input
+                                className={inputCls}
+                                placeholder="Enter equipment name"
+                                value={customName}
+                                onChange={(e) => setCustomName(e.target.value)}
+                            />
+                        </Field>
+                    )}
 
                     <Field label="Category">
                         <select
-                            className={`${inputCls} appearance-none`}
+                            className={`${inputCls} appearance-none ${categoryLocked ? "cursor-not-allowed opacity-70" : ""}`}
                             value={form.category}
                             onChange={(e) => setForm({ ...form, category: e.target.value })}
+                            disabled={categoryLocked}
                         >
                             <option value="">Select Category</option>
                             {categories.map((category) => (
@@ -142,17 +188,31 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
                             ))}
                         </select>
                     </Field>
+                    {categoryLocked && (
+                        <p className="-mt-2 text-xs text-muted">
+                            Category is set automatically because this equipment already exists.
+                        </p>
+                    )}
+                    {errors.category && (
+                        <p className="-mt-2 text-xs text-red-500">{errors.category}</p>
+                    )}
 
                     <div className="grid grid-cols-2 gap-4">
-                        <Field label="Quantity">
+                       <Field label="Quantity">
                             <input
                                 type="number"
                                 min={1}
                                 className={inputCls}
                                 value={form.quantity}
-                                onChange={(e) => setForm({ ...form, quantity: Number(e.target.value) })}
+                                onChange={(e) => {
+                                    const raw = e.target.value.replace(/^0+(?=\d)/, "");
+                                    setForm({ ...form, quantity: raw === "" ? "" : Number(raw) });
+                                }}
                             />
                         </Field>
+                        {errors.quantity && (
+                                <p className="-mt-2 text-xs text-red-500">{errors.quantity}</p>
+                            )}
 
                         <Field label="Condition">
                             <select
@@ -177,22 +237,16 @@ export default function EquipmentModal({ open, onClose, onSave, equipment }) {
                         Cancel
                     </button>
                     <button
-                        onClick={() =>
-                            onSave({
-                                ...form,
-                                equipmentName:
-                                    form.equipmentName === "Others" ? customName : form.equipmentName,
-                            })
-                        }
+                        onClick={handleSave}
                         className="rounded-[10px] bg-navy px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-royal active:translate-y-px"
                     >
                         Save Equipment
                     </button>
-                </div>
-            </div>
-        </div>
-    );
-}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    }
 
 function Field({ label, children }) {
     return (

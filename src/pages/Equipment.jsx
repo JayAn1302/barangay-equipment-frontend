@@ -3,16 +3,19 @@ import {
     getEquipments,
     createEquipment,
     updateEquipment,
-    deleteEquipment
+    deleteEquipment,
+    incrementEquipment
 } from "../services/equipmentService";
 import EquipmentModal from "../components/Equipment/EquipmentModal";
 import EquipmentHeader from "../components/Equipment/EquipmentHeader";
 import EquipmentSearch from "../components/Equipment/EquipmentSearch";
 import EquipmentTable from "../components/Equipment/EquipmentTable";
 import DeleteEquipmentModal from "../components/Equipment/DeleteEquipmentModal";
+import MergeEquipmentModal from "../components/Equipment/MergeEquipmentModal";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 import { getRole } from "../utils/tokenStorage";
+
 
 
 export default function Equipment() {
@@ -22,6 +25,9 @@ export default function Equipment() {
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
     const [selectedEquipment, setSelectedEquipment] = useState(null);
+    const [mergeModal, setMergeModal] = useState(false);
+    const [mergeTarget, setMergeTarget] = useState(null);
+    const [pendingQuantity, setPendingQuantity] = useState(0);
     const [searchParams] = useSearchParams();
     const selectedId = searchParams.get("id");
     const [search, setSearch] = useState("");
@@ -67,7 +73,7 @@ export default function Equipment() {
 
 }, [equipments, selectedId]);
 
-    async function handleSave(data) {
+  async function handleSave(data) {
 
     try {
 
@@ -95,52 +101,78 @@ export default function Equipment() {
 
     catch (error) {
 
-    toast.error(
+        if (error.response?.status === 409) {
 
-        error.response?.data ||
+            setMergeTarget(error.response.data);
+            setPendingQuantity(data.quantity);
+            setOpenModal(false);
+            setMergeModal(true);
 
-        "Unable to save equipment."
+        } else {
 
-    );
+            toast.error(getErrorMessage(error, "Unable to save equipment."));
 
-}
-
-}
-async function handleDelete(id) {
-
-    try {
-
-        await deleteEquipment(id);
-        toast.success("Equipment deleted successfully!");
-
-        setDeleteModal(false);
-
-        setDeleteItem(null);
-
-        loadEquipments();
-
-    }
-
-    catch (error) {
-
-        console.log(error);
-
-        toast.error(
-            error.response?.data ||
-            "Failed to delete equipment."
-        );
+        }
 
     }
 
 }
 
-    const filteredEquipments = equipments.filter(item =>
-        item.equipmentName.toLowerCase().includes(search.toLowerCase())
-    );
+            async function handleConfirmMerge() {
 
-    return (
+                try {
 
-        <div className="space-y-6">
+                    await incrementEquipment(mergeTarget.existingId, pendingQuantity);
+
+                    toast.success("Quantity added to existing equipment!");
+
+                    setMergeModal(false);
+                    setMergeTarget(null);
+                    setPendingQuantity(0);
+                    setSelectedEquipment(null);
+
+                    loadEquipments();
+
+                }
+
+                catch (error) {
+
+                    toast.error(getErrorMessage(error, "Unable to update quantity."));
+
+                }
+
+            }
+            async function handleDelete(id) {
+
+                try {
+
+                    await deleteEquipment(id);
+                    toast.success("Equipment deleted successfully!");
+
+                    setDeleteModal(false);
+
+                    setDeleteItem(null);
+
+                    loadEquipments();
+
+                }
+
+                       catch (error) {
+
+                        console.log(error);
+
+                        toast.error(getErrorMessage(error, "Failed to delete equipment."));
+
+                    }
+            }
+
+                const filteredEquipments = equipments.filter(item =>
+                    item.equipmentName.toLowerCase().includes(search.toLowerCase())
+                );
+
+                return (
+
+                    <div className="space-y-6">
 
             <EquipmentHeader
                 onAdd={
@@ -174,14 +206,16 @@ async function handleDelete(id) {
             />
 
         <EquipmentModal
-    open={openModal}
-    equipment={selectedEquipment}
-    onClose={() => {
-        setOpenModal(false);
-        setSelectedEquipment(null);
-    }}
-    onSave={handleSave}
-/>
+                open={openModal}
+                equipment={selectedEquipment}
+                existingEquipments={equipments}
+                onClose={() => {
+                    setOpenModal(false);
+                    setSelectedEquipment(null);
+                }}
+                onSave={handleSave}
+            />
+
 <DeleteEquipmentModal
 
     open={deleteModal}
@@ -200,8 +234,38 @@ async function handleDelete(id) {
 
 />
 
+<MergeEquipmentModal
+    open={mergeModal}
+    existing={mergeTarget}
+    addQuantity={pendingQuantity}
+    onClose={() => {
+        setMergeModal(false);
+        setMergeTarget(null);
+        setPendingQuantity(0);
+    }}
+    onConfirm={handleConfirmMerge}
+/>
+
         </div>
 
-    );
+        );
 
+}
+
+function getErrorMessage(error, fallback) {
+    const data = error.response?.data;
+
+    if (!data) return fallback;
+    if (typeof data === "string") return data;
+    if (data.message) return data.message;
+    if (data.title) return data.title;
+
+    if (data.errors) {
+        const firstField = Object.values(data.errors)[0];
+        if (Array.isArray(firstField) && firstField.length > 0) {
+            return firstField[0];
+        }
+    }
+
+    return fallback;
 }

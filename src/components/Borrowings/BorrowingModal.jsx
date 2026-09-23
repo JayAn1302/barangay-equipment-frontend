@@ -280,7 +280,7 @@ export default function BorrowingModal({
                                     value={eq.id}
                                 >
 
-                                    {eq.equipmentName} ({eq.availableQuantity} available)
+                                    {eq.equipmentName} — {eq.condition} ({eq.availableQuantity} available)
 
                                 </option>
 

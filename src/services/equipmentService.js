@@ -29,3 +29,9 @@ export const deleteEquipment = async (id) => {
     const response = await api.delete(`/Equipment/${id}`);
     return response.data;
 };
+
+// INCREMENT (add quantity to an existing equipment)
+export const incrementEquipment = async (id, quantity) => {
+    const response = await api.patch(`/Equipment/${id}/increment`, { quantity });
+    return response.data;
+};
