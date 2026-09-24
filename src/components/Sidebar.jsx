@@ -16,7 +16,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import Seal from "./Seal";
 
-export default function Sidebar() {
+export default function Sidebar({ mobileOpen, onClose }) {
 
     const navigate = useNavigate();
 
@@ -100,9 +100,26 @@ export default function Sidebar() {
             : []),
     ];
 
-    return (
+       return (
 
-        <aside className="sticky top-0 flex h-screen w-[280px] flex-shrink-0 flex-col bg-[#0E1A36] text-white">
+        <>
+
+            {/* Mobile backdrop */}
+
+            {mobileOpen && (
+
+                <div
+                    className="fixed inset-0 z-40 bg-black/50 md:hidden"
+                    onClick={onClose}
+                />
+
+            )}
+
+            <aside
+                className={`fixed inset-y-0 left-0 z-50 flex h-screen w-[280px] flex-shrink-0 flex-col bg-[#0E1A36] text-white transition-transform duration-300 md:sticky md:top-0 md:translate-x-0 ${
+                    mobileOpen ? "translate-x-0" : "-translate-x-full"
+                }`}
+            >
 
             {/* ===============================
                     HEADER
@@ -159,15 +176,16 @@ export default function Sidebar() {
 
                         return (
 
-                            <NavLink
-                                key={item.path}
-                                to={item.path}
-                                className={({ isActive }) =>
-                                    `group relative flex items-center rounded-xl px-3 py-2.5 transition-all duration-200 ${
-                                        isActive
-                                            ? "bg-white/10 text-white"
-                                            : "text-white/60 hover:bg-white/5 hover:text-white"
-                                    }`
+                <NavLink
+                    key={item.path}
+                    to={item.path}
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                        `group relative flex items-center rounded-xl px-3 py-2.5 transition-all duration-200 ${
+                          isActive
+                                ? "bg-white/10 text-white"
+                               : "text-white/60 hover:bg-white/5 hover:text-white"
+                                 }`
                                 }
                             >
 
@@ -299,6 +317,9 @@ export default function Sidebar() {
             </div>
 
         </aside>
+
+          </>
+
 
     );
 

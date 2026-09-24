@@ -1,10 +1,26 @@
-import { RotateCcw, Trash2, User, Package } from "lucide-react";
+import { useState } from "react";
+import { RotateCcw, Trash2, User, Package, ChevronLeft, ChevronRight } from "lucide-react";
+
+const PAGE_SIZE = 5;
 
 export default function BorrowingTable({
     borrowings,
     onReturn,
     onDelete,
 }) {
+
+    const [page, setPage] = useState(1);
+
+    const totalPages = Math.max(1, Math.ceil(borrowings.length / PAGE_SIZE));
+    const safePage = Math.min(page, totalPages);
+
+    const startIndex = (safePage - 1) * PAGE_SIZE;
+    const paginatedBorrowings = borrowings.slice(startIndex, startIndex + PAGE_SIZE);
+
+    const goToPage = (next) => {
+        setPage(Math.min(Math.max(next, 1), totalPages));
+    };
+
     return (
         <div className="fade-up overflow-hidden rounded-2xl border border-line bg-surface">
 
@@ -28,20 +44,22 @@ export default function BorrowingTable({
 
                 <tbody>
 
-                    {borrowings.length > 0 ? (
+                                        {paginatedBorrowings.length > 0 ? (
 
-                        borrowings.map((item) => (
+                        paginatedBorrowings.map((item, rowIndex) => (
 
                             <tr
                                 key={item.id}
-                                className="border-b border-line transition hover:bg-ground/60 last:border-0"
+                                className={`border-b border-line align-top transition hover:bg-ground/60 last:border-0 ${
+                                    rowIndex % 2 === 1 ? "bg-ground/25" : "bg-surface"
+                                }`}
                             >
 
                                 {/* Reference */}
 
-                                <td className="px-6 py-4">
+                                <td className="whitespace-nowrap px-6 py-4">
 
-                                    <span className="rounded-full bg-ground px-3 py-1 text-xs font-semibold text-navy">
+                                    <span className="whitespace-nowrap rounded-full bg-ground px-3 py-1 text-xs font-semibold text-navy">
 
                                         {item.referenceNo}
 
@@ -90,53 +108,70 @@ export default function BorrowingTable({
 
                                     <div className="space-y-3">
 
-                                        {item.items?.map((equipment, index) => (
+                                       {item.items?.map((equipment, index) => {
 
-                                            <div
-                                                key={index}
-                                                className="flex items-center gap-3"
-                                            >
+    const remaining = equipment.quantityBorrowed - equipment.quantityReturned;
+    const percentReturned = Math.round(
+        (equipment.quantityReturned / equipment.quantityBorrowed) * 100
+    );
+    const fullyReturned = remaining === 0;
 
-                                                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-ground">
+    return (
 
-                                                    <Package
-                                                        size={16}
-                                                        className="text-muted"
-                                                    />
+        <div
+            key={index}
+            className="flex items-start gap-3"
+        >
 
-                                                </div>
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-ground">
 
-                                                <div>
+                <Package
+                    size={16}
+                    className="text-muted"
+                />
 
-                                                    <p className="text-sm font-semibold text-navy">
+            </div>
 
-                                                        {equipment.equipmentName}
+            <div className="min-w-[160px]">
 
-                                                    </p>
+                <p className="text-sm font-semibold text-navy">
 
-                                                    <p className="text-xs text-muted">
+                    {equipment.equipmentName}
 
-                                                        Borrowed: {equipment.quantityBorrowed}
+                </p>
 
-                                                    </p>
+                <div className="mt-1.5 flex items-center gap-2">
 
-                                                    <p className="text-xs text-green-600">
+                    <div className="h-1.5 w-24 overflow-hidden rounded-full bg-ground">
 
-                                                        Returned: {equipment.quantityReturned}
+                        <div
+                            className={`h-full rounded-full transition-all ${
+                                fullyReturned ? "bg-green-500" : "bg-amber-500"
+                            }`}
+                            style={{ width: `${percentReturned}%` }}
+                        />
 
-                                                    </p>
+                    </div>
 
-                                                    <p className="text-xs font-medium text-orange-600">
+                    <span
+                        className={`text-xs font-medium ${
+                            fullyReturned ? "text-green-600" : "text-amber-600"
+                        }`}
+                    >
 
-                                                        Remaining: {equipment.quantityBorrowed - equipment.quantityReturned}
+                        {equipment.quantityReturned}/{equipment.quantityBorrowed} returned
 
-                                                    </p>
+                    </span>
 
-                                                </div>
+                </div>
 
-                                            </div>
+            </div>
 
-                                        ))}
+        </div>
+
+    );
+
+})}
 
                                     </div>
 
@@ -258,7 +293,55 @@ export default function BorrowingTable({
 
                 </tbody>
 
-            </table>
+                        </table>
+
+            {/* Pagination footer */}
+
+            {borrowings.length > 0 && (
+
+                <div className="flex items-center justify-between border-t border-line px-6 py-4">
+
+                    <p className="text-xs text-muted">
+
+                        Showing {startIndex + 1}
+                        {"–"}
+                        {Math.min(startIndex + PAGE_SIZE, borrowings.length)} of {borrowings.length}
+
+                    </p>
+
+                    <div className="flex items-center gap-2">
+
+                        <button
+                            onClick={() => goToPage(safePage - 1)}
+                            disabled={safePage === 1}
+                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-line text-muted transition hover:bg-ground disabled:cursor-not-allowed disabled:opacity-40"
+                        >
+
+                            <ChevronLeft size={16} />
+
+                        </button>
+
+                        <span className="text-xs font-medium text-navy">
+
+                            {safePage} of {totalPages}
+
+                        </span>
+
+                        <button
+                            onClick={() => goToPage(safePage + 1)}
+                            disabled={safePage === totalPages}
+                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-line text-muted transition hover:bg-ground disabled:cursor-not-allowed disabled:opacity-40"
+                        >
+
+                            <ChevronRight size={16} />
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            )}
 
         </div>
     );

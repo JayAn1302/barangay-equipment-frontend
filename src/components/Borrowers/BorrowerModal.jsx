@@ -60,19 +60,42 @@ export default function BorrowerModal({
 
     if (!open) return null;
 
-    function handleImageChange(e) {
+    const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
+const MAX_PHOTO_SIZE_BYTES = 2 * 1024 * 1024; // 2MB
 
-        const file = e.target.files[0];
+function handleImageChange(e) {
 
-        if (!file) return;
+    const file = e.target.files[0];
 
-        setForm({
-            ...form,
-            photo: file,
-        });
+    if (!file) return;
 
-        setPreview(URL.createObjectURL(file));
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        setErrors((prev) => ({
+            ...prev,
+            photo: "Only JPG or PNG images are allowed.",
+        }));
+        e.target.value = "";
+        return;
     }
+
+    if (file.size > MAX_PHOTO_SIZE_BYTES) {
+        setErrors((prev) => ({
+            ...prev,
+            photo: "Photo must be 2MB or smaller.",
+        }));
+        e.target.value = "";
+        return;
+    }
+
+    setErrors((prev) => ({ ...prev, photo: undefined }));
+
+    setForm({
+        ...form,
+        photo: file,
+    });
+
+    setPreview(URL.createObjectURL(file));
+}
 
     const inputCls =
         "w-full rounded-[10px] border border-line bg-ground px-3 py-2.5 text-sm outline-none transition focus:border-royal focus:ring-2 focus:ring-royal/15 placeholder:text-muted/70";
@@ -174,11 +197,15 @@ export default function BorrowerModal({
                                 Upload Photo
                             </label>
 
-                            <p className="mt-2 text-xs text-muted">
+                                                        <p className="mt-2 text-xs text-muted">
 
                                 JPG, PNG (Maximum 2MB)
 
                             </p>
+
+                            {errors.photo && (
+                                <p className="mt-2 text-xs text-red-500">{errors.photo}</p>
+                            )}
 
                         </div>
 

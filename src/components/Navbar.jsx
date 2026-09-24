@@ -4,6 +4,7 @@ import {
     Sun,
     Search,
     ChevronDown,
+    Menu,
 } from "lucide-react";
 
 import {
@@ -29,7 +30,7 @@ import {
     markAsRead,
 } from "../services/notificationService";
 
-export default function Navbar() {
+export default function Navbar({ onOpenSidebar }) {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -356,13 +357,20 @@ export default function Navbar() {
 
     return (
 
-<header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-line bg-surface/90 px-8 backdrop-blur-md">
+<header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-line bg-surface/90 px-4 backdrop-blur-md md:px-8">
 
     {/* =========================
             LEFT SIDE
     ========================== */}
 
-   <div>
+   <div className="flex items-center gap-3">
+
+   <button
+       onClick={onOpenSidebar}
+       className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-ground transition hover:bg-surface md:hidden"
+   >
+       <Menu size={19} />
+   </button>
 
    <p className="text-sm">
     <span className="text-muted">EBMS</span>
@@ -406,8 +414,10 @@ export default function Navbar() {
                     ] || "Search..."
                 }
 
-                className="
-                    w-[380px]
+                               className="
+                    w-[200px]
+                    sm:w-[280px]
+                    md:w-[380px]
                     rounded-2xl
                     border
                     border-line
