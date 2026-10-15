@@ -1,10 +1,15 @@
+import { useNavigate } from "react-router-dom";
+
+export default function RecentBorrowings({ borrowings = [] }) {
+
 const statusStyle = {
     Borrowed: "text-[#1e3a8a] bg-[#1e3a8a]/10 ring-[#1e3a8a]/20",
     Returned: "text-[#6b6a63] bg-[#6b6a63]/10 ring-[#6b6a63]/20",
     Overdue: "text-[#b3341f] bg-[#b3341f]/10 ring-[#b3341f]/20",
 };
 
-export default function RecentBorrowings({ borrowings = [] }) {
+
+    const navigate = useNavigate();
     const fmt = (d) =>
         new Date(d).toLocaleDateString("en-US", {
             month: "short",
@@ -28,9 +33,12 @@ export default function RecentBorrowings({ borrowings = [] }) {
                         </p>
                     </div>
                 </div>
-                <button className="text-xs font-semibold text-royal transition hover:underline">
-                    View all
-                </button>
+                <button
+    onClick={() => navigate("/borrowings")}
+    className="text-xs font-semibold text-royal transition hover:underline"
+>
+    View all
+</button>
             </div>
 
             {/* Alert strip */}
@@ -62,7 +70,11 @@ export default function RecentBorrowings({ borrowings = [] }) {
                                 <td className="tnum px-5 py-3.5 font-semibold text-goldink">
                                     {item.referenceNo}
                                 </td>
-                                <td className="px-5 py-3.5 font-medium">{item.equipmentName}</td>
+                                <td className="px-5 py-3.5 font-medium">
+                                    {item.items && item.items.length > 0
+                                        ? item.items.map((i) => i.equipmentName).join(", ")
+                                        : "—"}
+                                </td>
                                 <td className="px-5 py-3.5 text-muted">{item.borrowerName}</td>
                                 <td className="tnum px-5 py-3.5 text-muted">{fmt(item.borrowDate)}</td>
                                 <td className={`tnum px-5 py-3.5 ${item.status === "Overdue" ? "font-semibold text-bad" : "text-muted"}`}>

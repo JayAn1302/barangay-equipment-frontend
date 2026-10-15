@@ -39,7 +39,9 @@ export default function EquipmentTable({ equipments, onEdit, onDelete }) {
                                     <td className="px-6 py-3.5 font-medium">{item.equipmentName}</td>
                                     <td className="px-6 py-3.5 text-muted">{item.category}</td>
                                     <td className="tnum px-6 py-3.5">{item.quantity}</td>
-                                    <td className="tnum px-6 py-3.5">{item.availableQuantity}</td>
+                                   <td className="tnum px-6 py-3.5">
+                                        {item.condition === "Damaged" ? 0 : item.availableQuantity}
+                                    </td>
                                     <td className="px-6 py-3.5">
                                         <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ring-1 ${conditionStyle[item.condition] || conditionStyle.Damaged}`}>
                                             <span className="h-1.5 w-1.5 rounded-full bg-current" />

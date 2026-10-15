@@ -20,17 +20,7 @@ ChartJS.register(
 
 export default function MonthlyActivity({ data }) {
 
-    const rows =
-        data && data.length
-            ? data
-            : [
-                  { month: "Feb", borrowed: 42, returned: 38 },
-                  { month: "Mar", borrowed: 55, returned: 49 },
-                  { month: "Apr", borrowed: 61, returned: 58 },
-                  { month: "May", borrowed: 48, returned: 52 },
-                  { month: "Jun", borrowed: 73, returned: 66 },
-                  { month: "Jul", borrowed: 88, returned: 71 },
-              ];
+        const rows = data && data.length ? data : [];
 
     const chartData = {
         labels: rows.map((r) => r.month),
